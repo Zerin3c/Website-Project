@@ -96,8 +96,8 @@ function cleanEmail(value) {
   return String(value || "").trim().slice(0, 254);
 }
 
-  function isValidEmail(email) {
-    return /^[^s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+function isValidEmail(email) {
+  return /^[^s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 function ensureCsrfToken(req) {
@@ -137,30 +137,31 @@ async function initDB() {
     CREATE TABLE IF NOT EXISTS users (
       id SERIAL PRIMARY KEY,
       name TEXT NOT NULL UNIQUE,
-      email text UNIQUE,
+      email TEXT UNIQUE,
       profile_quote TEXT,
       password_hash TEXT NOT NULL,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
   `);
 
   await pool.query(`
     ALTER TABLE users
-    ADD COLUMN IF NOT EXISTS email TEXT UNIQUE
+    ADD COLUMN IF NOT EXISTS email TEXT UNIQUE;
   `);
 
   await pool.query(`
     ALTER TABLE users
-    ADD COLUMN IF NOT EXISTS profile_quote TEXT
+    ADD COLUMN IF NOT EXISTS profile_quote TEXT;
   `);
 
   await pool.query(`
-    CREATE UNIQUE INDES IF NOT EXISTS user_name_lower_unique
-    ON users (LOWER(name))
+    CREATE UNIQUE INDEX IF NOT EXISTS user_name_lower_unique
+    ON users (LOWER(name));
   `);
 
   await pool.query(`
     CREATE UNIQUE INDEX IF NOT EXISTS user_email_lower_unique
-    ON users (LOWER(email))
+    ON users (LOWER(email));
   `);
 
   await pool.query(`
@@ -170,17 +171,20 @@ async function initDB() {
       content TEXT NOT NULL,
       author_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
   `);
 
   await pool.query(`
     CREATE TABLE IF NOT EXISTS session (
       sid varchar NOT NULL PRIMARY KEY,
       sess json NOT NULL,
-      expire timestamp(6) NOT NULL)
+      expire timestamp(6) NOT NULL
+    );
   `);
 
   await pool.query(`
-    CREATE INDEX IF NOT EXISTS idx_session_expire ON session(expire)
+    CREATE INDEX IF NOT EXISTS idx_session_expire
+    ON session(expire);
   `);
 }
 
@@ -197,7 +201,7 @@ app.get("/api/state", async (req, res) => {
 
     let users = [];
     if (configured) {
-      const usersResult = await pool.query("SELECT id, name, email, profile_quotes FROM users ORDER BY id ASC");
+      const usersResult = await pool.query("SELECT id, name, email, profile_quote FROM users ORDER BY id ASC");
       users = usersResult.rows;
     }
 
