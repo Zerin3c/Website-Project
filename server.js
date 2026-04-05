@@ -141,27 +141,26 @@ async function initDB() {
       profile_quote TEXT,
       password_hash TEXT NOT NULL,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-    );
   `);
 
   await pool.query(`
     ALTER TABLE users
-    ADD COLUMN IF NOT EXISTS email TEXT UNIQUE;
+    ADD COLUMN IF NOT EXISTS email TEXT UNIQUE
   `);
 
   await pool.query(`
     ALTER TABLE users
-    ADD COLUMN IF NOT EXISTS profile_quote TEXT;
+    ADD COLUMN IF NOT EXISTS profile_quote TEXT
   `);
 
   await pool.query(`
     CREATE UNIQUE INDES IF NOT EXISTS user_name_lower_unique
-    ON users (LOWER(name));
+    ON users (LOWER(name))
   `);
 
   await pool.query(`
     CREATE UNIQUE INDEX IF NOT EXISTS user_email_lower_unique
-    ON users (LOWER(email));
+    ON users (LOWER(email))
   `);
 
   await pool.query(`
@@ -171,26 +170,24 @@ async function initDB() {
       content TEXT NOT NULL,
       author_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-    );
   `);
 
   await pool.query(`
     CREATE TABLE IF NOT EXISTS session (
       sid varchar NOT NULL PRIMARY KEY,
       sess json NOT NULL,
-      expire timestamp(6) NOT NULL
-    );
+      expire timestamp(6) NOT NULL)
   `);
 
   await pool.query(`
-    CREATE INDEX IF NOT EXISTS idx_session_expire ON session(expire);
+    CREATE INDEX IF NOT EXISTS idx_session_expire ON session(expire)
   `);
 }
 
 app.use(express.static(path.join(__dirname)));
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.sendFile(path.join(__dirname, "index.html"))
 });
 
 app.get("/api/state", async (req, res) => {
