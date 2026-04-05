@@ -360,7 +360,8 @@ app.post("/api/login", authLimiter, requireCsrf, async (req, res) => {
 app.post("/api/profile-setup", requireAuth, requireCsrf, authLimiter, async (req, res) => {
   try {
     const email = cleanEmail(req.body.emails);
-    const profileQuote(req.body.profileQuote, 180);
+    
+    const profileQuote = cleanText(req.body.profileQuote, 180);
 
     if (!email) {
       return res.status(400).json({ error: "Email is required." });
