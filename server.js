@@ -92,6 +92,13 @@ function cleanText(value, max = 8000) {
   return String(value || "").trim().slice(0, max);
 }
 
+function cleanEmail(value) {
+  return String(value) || "").trim().slice(0, max);
+
+  function isValidEmail(email) {
+    return /^[^s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
 function ensureCsrfToken(req) {
   if (!req.session.csrfToken) {
     req.session.csrfToken = crypto.randomBytes(32).toString("hex");
@@ -129,9 +136,31 @@ async function initDB() {
     CREATE TABLE IF NOT EXISTS users (
       id SERIAL PRIMARY KEY,
       name TEXT NOT NULL UNIQUE,
+      email text UNIQUE,
+      profile_quote TEXT,
       password_hash TEXT NOT NULL,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
+  `);
+
+  await pool.query(`
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS email TEXT UNIQUE;
+  `);
+
+  await pool.query(`
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS profile_quote TEXT;
+  `);
+
+  await pool.query(`
+    CREATE UNIQUE INDES IF NOT EXISTS user_name_lower_unique
+    ON users (LOWER(name));
+  `);
+
+  await pool.query(`
+    CREATE UNIQUE INDEX IF NOT EXISTS user_email_lower_unique
+    ON users (LOWER(email));
   `);
 
   await pool.query(`
@@ -170,7 +199,7 @@ app.get("/api/state", async (req, res) => {
 
     let users = [];
     if (configured) {
-      const usersResult = await pool.query("SELECT id, name FROM users ORDER BY id ASC");
+      const usersResult = await pool.query("SELECT id, name, email, profile_quotes FROM users ORDER BY id ASC");
       users = usersResult.rows;
     }
 
@@ -186,6 +215,20 @@ app.get("/api/state", async (req, res) => {
       poems = poemsResult.rows;
     }
 
+    let needsProfileSetup = false;
+
+    if (req.session.user) {
+      const meResult = await pool.query(
+        "SELECT email, profile_quote FROM users WHERE id = $1",
+        [req.session.user.id]
+      );
+
+      if (meResult.rows.length) {
+        const me = meResult.rows[0];
+        needsProfileSetup = !me.email;
+      }
+    }
+
     ensureCsrfToken(req);
 
     res.json({
@@ -193,7 +236,8 @@ app.get("/api/state", async (req, res) => {
       users,
       currentUser: req.session.user || null,
       poems,
-      csrfToken: req.session.csrfToken
+      csrfToken: req.session.csrfToken, 
+      needsProfileSetup
     });
   } catch (error) {
     console.error(error);
@@ -310,6 +354,45 @@ app.post("/api/login", authLimiter, requireCsrf, async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Login failed." });
+  }
+});
+
+app.post("/api/profile-setup", requireAuth, requireCsrf, authLimiter, async (req, res) => {
+  try {
+    const email = cleanEmail(req.body.emails);
+    const profileQuote(req.body.profileQuote, 180);
+
+    if (!email) {
+      return res.status(400).json({ error: "Email is required." });
+    }
+
+    if (!isValidEmail(email)) {
+      return res.status(400).json({ error: "Enter a valid email address." });
+    }
+
+      const takenResult = await pool.query(
+        "SELECT id FROM users WHERE LOWER(email) = LOWER($1) AND id <> $2",
+        [email, req.session.user.id]
+      );
+    if (takenResult.rows.length) {
+      return res.status(400).json({ error: "That email is already in use." });
+    }
+
+    await pool.query(
+      "UPDATE users SET email = $1, profile_quote = $2 WHERE id = $3",
+      [email, profileQuote || null, req.session.user.id]
+    );
+
+    req.session.csrfToken = crypto.randomBytes(32).toString("hex");
+
+    res.json({
+      message: "Profile completed.",
+      csrfToken: req.session.csrfToken
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Could not save profile." )};
   }
 });
 
