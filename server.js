@@ -196,8 +196,9 @@ app.get("/", (req, res) => {
 
 app.get("/api/state", async (req, res) => {
   try {
-    const countResult = await pool.query("SELECT COUNT(*)::int AS count FROM users");
-    const configured = countResult.rows[0].count >= 2;
+     ensureCsrfToken(req);
+     const countResult = await pool.query("SELECT COUNT(*)::int AS count FROM users");
+     const configured = countResult.rows[0].count >= 2;
 
     let users = [];
     if (configured) {
