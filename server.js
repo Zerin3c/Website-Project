@@ -93,7 +93,8 @@ function cleanText(value, max = 8000) {
 }
 
 function cleanEmail(value) {
-  return String(value) || "").trim().slice(0, max);
+  return String(value || "").trim().slice(0, 254);
+}
 
   function isValidEmail(email) {
     return /^[^s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -359,8 +360,7 @@ app.post("/api/login", authLimiter, requireCsrf, async (req, res) => {
 
 app.post("/api/profile-setup", requireAuth, requireCsrf, authLimiter, async (req, res) => {
   try {
-    const email = cleanEmail(req.body.emails);
-    
+    const email = cleanEmail(req.body.email);
     const profileQuote = cleanText(req.body.profileQuote, 180);
 
     if (!email) {
