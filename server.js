@@ -372,9 +372,9 @@ app.post("/api/profile-setup", requireAuth, requireCsrf, authLimiter, async (req
     }
 
       const takenResult = await pool.query(
-        "SELECT id FROM users WHERE LOWER(email) = LOWER($1) AND id <> $2",
-        [email, req.session.user.id]
-      );
+       "SELECT id FROM users WHERE LOWER(email) = LOWER($1) AND id <> $2",
+       [email, req.session.user.id]
+    );
     if (takenResult.rows.length) {
       return res.status(400).json({ error: "That email is already in use." });
     }
@@ -382,14 +382,14 @@ app.post("/api/profile-setup", requireAuth, requireCsrf, authLimiter, async (req
     await pool.query(
       "UPDATE users SET email = $1, profile_quote = $2 WHERE id = $3",
       [email, profileQuote || null, req.session.user.id]
-    });
+    );
 
     req.session.csrfToken = crypto.randomBytes(32).toString("hex");
 
     res.json({
       message: "Profile completed.",
       csrfToken: req.session.csrfToken
-    });
+    );
 
   } catch (error) {
     console.error(error);
