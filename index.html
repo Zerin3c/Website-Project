@@ -588,6 +588,27 @@
           <p>Log in to read and write poems in your glowing secret garden.</p>
         </div>
 
+        <div id="profileSetupBox" class="hidden">
+          <h3>Finish Your Profile</h3>
+          <p style="margin-bottom: 14px; color : #d9c7f5;">
+          </p>
+
+          <form id="profileSetupForm">
+            <label>
+              Email
+              <input type="email" id="profileEmail" placeholder="your@email.com" required />
+            </label>
+
+            <label>
+              Short profile quote (optional)
+              <input type="text" id="profileQuote" placeholder="Example: always yours under the stars" />
+            </label>
+
+            <button type="submit" class="primary-btn">Complete Profile</button>
+            <div class="status" id="profileSetupStatus"></div>
+          </form>
+        </div>
+
         <div id="poemArea" class="hidden">
           <form id="poemForm">
             <label>
@@ -620,6 +641,12 @@
     const lockedView = document.getElementById("lockedView");
     const poemArea = document.getElementById("poemArea");
     const authButtons = document.getElementById("authButtons");
+
+    const profileSetupBox = document.getElementById("profileSetupBox");
+    const profileSetupForm = document.getElementById("profileSetupForm");
+    const profileEmail = document.getElementById("profileEmail");
+    const profileQuote = document.getElementById("profileQuote");
+    const profileSetupStatus = document.getElementById("profileSetupStatus");
 
     const setupForm = document.getElementById("setupForm");
     const loginForm = document.getElementById("loginForm");
@@ -723,10 +750,18 @@
         lockedView.classList.remove("hidden");
         poemArea.classList.add("hidden");
         authButtons.classList.add("hidden");
-      } else {
+
+      profileSetupBox.classList.add("hidden");
+        
+      } else if (data.needsProfileSetup) {
         lockedView.classList.add("hidden");
+
+      profileSetupBox.classList.add("hidden");
+        
         poemArea.classList.remove("hidden");
-        authButtons.classList.remove("hidden");
+        
+      authButtons.classList.remove("hidden");
+        
         renderPoems(data.poems, data.currentUser);
       }
     }
@@ -993,6 +1028,28 @@
     for (let i = 0; i < 22; i++) createPetal();
     for (let i = 0; i < 7; i++) createButterfly();
 
+    profileSetupForm?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      setStatus(profileSetupStatus, 
+      "Saving...");
+
+      try {
+        const data = await api("/api/profile-setup", {
+          method: "POST",
+          body: JSON.stringify({
+            email: profileEmail.value,
+            profileQuote: profileQuote.value
+          })
+        });
+
+        setStatus(profileSetupStatus, data.message, "success");
+        profileSetupForm.reset();
+        await refreshState();
+      } catch (error) {
+        setStatus(profileSetupStatus, error.message, "error");
+      }
+    });
+    
     refreshState();
   </script>
 </body>
