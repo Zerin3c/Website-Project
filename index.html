@@ -527,18 +527,22 @@
               Person 1 name
               <input type="text" id="name1" placeholder="Example: Luna" required />
             </label>
+            
             <label>
               Person 1 password
               <input type="password" id="pass1" placeholder="Create password" required />
             </label>
+            
             <label>
               Person 2 name
               <input type="text" id="name2" placeholder="Example: Orion" required />
             </label>
+            
             <label>
               Person 2 password
               <input type="password" id="pass2" placeholder="Create password" required />
             </label>
+            
             <button type="submit" class="primary-btn">Create Our Space</button>
             <div class="status" id="setupStatus"></div>
           </form>
@@ -807,46 +811,54 @@
     window.deletePoem = deletePoem;
 
     setupForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
+  if (!setupForm.checkValidity()) {
+    return;
+  }
 
-      try {
-        const data = await api("/api/setup", {
-          method: "POST",
-          body: JSON.stringify({
-            name1: document.getElementById("name1").value.trim(),
-            pass1: document.getElementById("pass1").value,
-            name2: document.getElementById("name2").value.trim(),
-            pass2: document.getElementById("pass2").value
-          })
-        });
+  e.preventDefault();
 
-        setupForm.reset();
-        setStatus(setupStatus, data.message, "success");
-        await refreshState();
-      } catch (error) {
-        setStatus(setupStatus, error.message, "error");
-      }
+  try {
+    const data = await api("/api/setup", {
+      method: "POST",
+      body: JSON.stringify({
+        name1: document.getElementById("name1").value.trim(),
+        pass1: document.getElementById("pass1").value,
+        name2: document.getElementById("name2").value.trim(),
+        pass2: document.getElementById("pass2").value
+      })
     });
+
+    setupForm.reset();
+    setStatus(setupStatus, data.message, "success");
+    await refreshState();
+  } catch (error) {
+    setStatus(setupStatus, error.message, "error");
+  }
+});
 
     loginForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
+  if (!loginForm.checkValidity()) {
+    return;
+  }
 
-      try {
-        const data = await api("/api/login", {
-          method: "POST",
-          body: JSON.stringify({
-            name: loginName.value,
-            password: loginPassword.value
-          })
-        });
+  e.preventDefault();
 
-        loginForm.reset();
-        setStatus(loginStatus, data.message, "success");
-        await refreshState();
-      } catch (error) {
-        setStatus(loginStatus, error.message, "error");
-      }
+  try {
+    const data = await api("/api/login", {
+      method: "POST",
+      body: JSON.stringify({
+        name: loginName.value,
+        password: loginPassword.value
+      })
     });
+
+    loginForm.reset();
+    setStatus(loginStatus, data.message, "success");
+    await refreshState();
+  } catch (error) {
+    setStatus(loginStatus, error.message, "error");
+  }
+});
 
     logoutBtn.addEventListener("click", async () => {
       try {
@@ -1029,26 +1041,29 @@
     for (let i = 0; i < 7; i++) createButterfly();
 
     profileSetupForm?.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      setStatus(profileSetupStatus, 
-      "Saving...");
+  if (!profileSetupForm.checkValidity()) {
+    return;
+  }
 
-      try {
-        const data = await api("/api/profile-setup", {
-          method: "POST",
-          body: JSON.stringify({
-            email: profileEmail.value,
-            profileQuote: profileQuote.value
-          })
-        });
+  e.preventDefault();
+  setStatus(profileSetupStatus, "Saving...");
 
-        setStatus(profileSetupStatus, data.message, "success");
-        profileSetupForm.reset();
-        await refreshState();
-      } catch (error) {
-        setStatus(profileSetupStatus, error.message, "error");
-      }
+  try {
+    const data = await api("/api/profile-setup", {
+      method: "POST",
+      body: JSON.stringify({
+        email: profileEmail.value,
+        profileQuote: profileQuote.value
+      })
     });
+
+    setStatus(profileSetupStatus, data.message, "success");
+    profileSetupForm.reset();
+    await refreshState();
+  } catch (error) {
+    setStatus(profileSetupStatus, error.message, "error");
+  }
+});
     
     refreshState();
   </script>
