@@ -368,10 +368,11 @@ app.post("/api/profile-setup", requireAuth, requireCsrf, authLimiter, async (req
       return res.status(400).json({ error: "Enter a valid email address." });
     }
 
-      const takenResult = await pool.query(
-       "SELECT id FROM users WHERE LOWER(email) = LOWER($1) AND id <> $2",
-       [email, req.session.user.id]
+    const takenResult = await pool.query(
+      "SELECT id FROM users WHERE LOWER(email) = LOWER($1) AND id <> $2",
+      [email, req.session.user.id]
     );
+
     if (takenResult.rows.length) {
       return res.status(400).json({ error: "That email is already in use." });
     }
@@ -386,19 +387,11 @@ app.post("/api/profile-setup", requireAuth, requireCsrf, authLimiter, async (req
     res.json({
       message: "Profile completed.",
       csrfToken: req.session.csrfToken
-    );
-
+    });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Could not save profile." )};
+    res.status(500).json({ error: "Could not save profile." });
   }
-});
-
-app.post("/api/logout", requireAuth, requireCsrf, (req, res) => {
-  req.session.destroy(() => {
-    res.clearCookie("love_poem_sid");
-    res.json({ message: "Logged out." });
-  });
 });
 
 app.post("/api/poems", requireAuth, requireCsrf, writeLimiter, async (req, res) => {
