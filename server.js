@@ -382,7 +382,7 @@ app.post("/api/profile-setup", requireAuth, requireCsrf, authLimiter, async (req
     await pool.query(
       "UPDATE users SET email = $1, profile_quote = $2 WHERE id = $3",
       [email, profileQuote || null, req.session.user.id]
-    );
+    });
 
     req.session.csrfToken = crypto.randomBytes(32).toString("hex");
 
