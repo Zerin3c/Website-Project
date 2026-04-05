@@ -906,7 +906,7 @@
     function createPetal() {
       const petal = document.createElement("div");
       petal.className = "petal";
-      petal.innerHTML = \`
+      petal.innerHTML = `
         <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
             <linearGradient id="petalFill" x1="0" y1="0" x2="1" y2="1">
@@ -936,7 +936,7 @@
                 fill="none"
                 stroke-linecap="round"/>
         </svg>
-      \`;
+      `;
       petal.style.left = Math.random() * 100 + "vw";
       petal.style.top = "-10vh";
       petal.style.animationDuration = 10 + Math.random() * 8 + "s";
@@ -948,7 +948,7 @@
     function createButterfly() {
       const butterfly = document.createElement("div");
       butterfly.className = "butterfly";
-      butterfly.innerHTML = \`
+      butterfly.innerHTML = `
       
         <svg viewBox="0 0 140 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
@@ -1027,7 +1027,7 @@
           <circle cx="102" cy="56" r="1.9" fill="rgba(255,255,255,0.25)"/>
             
       </svg>
-      \`;
+      `;
       butterfly.style.top = 8 + Math.random() * 72 + "vh";
       butterfly.style.left = Math.random() * 100 + "vw";
       butterfly.style.animationDuration = 18 + Math.random() * 12 + "s";
