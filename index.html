@@ -812,11 +812,12 @@
     window.deletePoem = deletePoem;
 
     setupForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
   if (!setupForm.checkValidity()) {
+    setupForm.reportValidity();
     return;
   }
-
-  e.preventDefault();
 
   try {
     const data = await api("/api/setup", {
@@ -838,11 +839,12 @@
 });
 
     loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
   if (!loginForm.checkValidity()) {
+    loginForm.reportValidity();
     return;
   }
-
-  e.preventDefault();
 
   try {
     const data = await api("/api/login", {
@@ -873,6 +875,11 @@
     poemForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
+      if (!poemForm.checkValidity()) {
+        poemForm.reportValidity();
+        return;
+      }
+      
       try {
         const data = await api("/api/poems", {
           method: "POST",
