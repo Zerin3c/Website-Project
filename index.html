@@ -694,11 +694,18 @@
       });
     }
 
-    async function api(url, options = {}) {
+    async function api(url, options = {}) 
+    {
+      console.log("API CALL:", url);
+      console.log("csrfToken before request:", csrfToken);
+      
       const headers = { "Content-Type": "application/json", ...(options.headers || {}) };
+      
       if (csrfToken) {
         headers["x-csrf-token"] = csrfToken;
       }
+
+      console.log("headers being sent:", headers);
 
       const response = await fetch(url, {
         ...options,
@@ -720,6 +727,7 @@
     async function refreshState() {
       try {
         const data = await api("/api/state");
+        console.log("/api/state response:", data);
         renderState(data);
       } catch (error) {
         console.error(error);
@@ -818,6 +826,8 @@
     setupForm.reportValidity();
     return;
   }
+      
+    console.log("SETUP SUBMIT csrfToken=", csrfToken);
 
   try {
     const data = await api("/api/setup", {
