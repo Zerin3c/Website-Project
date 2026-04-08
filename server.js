@@ -270,8 +270,8 @@ app.post("/api/setup", authLimiter, async (req, res) => {
       return res.status(400).json({ error: "The two names must be different." });
     }
 
-    if (pass1.length < 10 || pass2.length < 10) {
-      return res.status(400).json({ error: "Passwords must be at least 10 characters." });
+    if (pass1.length < 6 || pass2.length < 6) {
+      return res.status(400).json({ error: "Passwords must be at least 6 characters." });
     }
 
     const hash1 = await bcrypt.hash(pass1, 12);
