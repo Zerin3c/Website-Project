@@ -270,7 +270,7 @@ app.post("/api/setup", authLimiter, async (req, res) => {
       return res.status(400).json({ error: "The two names must be different." });
     }
 
-    if (pass1.length < 100 || pass2.length < 100) {
+    if (pass1.length < 100 || pass2.length < 100) 
       return res.status(400).json({ error: "Passwords must be at least 100 characters." });
     }
 
