@@ -634,7 +634,8 @@
       </section>
     </main>
 
-    <p class="footer-note">Made with black skies, violet light, glowing butterflies, drifting petals, and love.</p>
+    <p class="footer-note">Made with black skies, violet light, glowing butterflies, drifting petals, and love.
+    </p>
   </div>
 
   <script>
@@ -1041,17 +1042,19 @@
     for (let i = 0; i < 7; i++) createButterfly();
 
     profileSetupForm?.addEventListener("submit", async (e) => {
-  if (!profileSetupForm.checkValidity()) {
-    return;
-  }
+      e.preventDefault();
+      
+    if (!profileSetupForm.checkValidity()) {
+       profileSetupForm.reportValidity();
+       return;
+    }
 
-  e.preventDefault();
-  setStatus(profileSetupStatus, "Saving...");
+    setStatus(profileSetupStatus, "Saving...");
 
-  try {
-    const data = await api("/api/profile-setup", {
-      method: "POST",
-      body: JSON.stringify({
+    try {
+      const data = await api("/api/profile-setup", {
+        method: "POST",
+        body: JSON.stringify({
         email: profileEmail.value,
         profileQuote: profileQuote.value
       })
