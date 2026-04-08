@@ -21,8 +21,7 @@ if (!process.env.SESSION_SECRET) {
   throw new Error("Missing SESSION_SECRET secret.");
 }
 
-if (trustProxy) {
-  app.set("trust proxy", 1);
+app.set("trust proxy", 1);
 }
 
 const pool = new Pool({
@@ -61,7 +60,7 @@ app.use(
     proxy: trustProxy,
     cookie: {
       httpOnly: true,
-      secure: isProduction,
+      secure: false,
       sameSite: "lax",
       maxAge: 1000 * 60 * 60 * 24 * 7
     }
