@@ -22,7 +22,6 @@ if (!process.env.SESSION_SECRET) {
 }
 
 app.set("trust proxy", 1);
-}
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -248,6 +247,8 @@ app.get("/api/state", async (req, res) => {
 });
 
 app.post("/api/setup", authLimiter, async (req, res) => {
+  console.log("SETUP ROUTE HIT");
+  
   const client = await pool.connect();
 
   try {
