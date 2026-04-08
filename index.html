@@ -709,7 +709,8 @@
 
       const response = await fetch(url, {
         ...options,
-        headers
+        headers,
+        credentials: "same-origin"
       });
 
       const data = await response.json();
@@ -824,6 +825,15 @@
       
   if (!setupForm.checkValidity()) {
     setupForm.reportValidity();
+    return;
+  }
+
+  if (!csrfToken) {
+    await refreshState();
+  }
+
+  if (!csrfToken) {
+    setStatus(setUpStatus, "Still loading secure session. Please wait a second and try again.", "error");
     return;
   }
       
