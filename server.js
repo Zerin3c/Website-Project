@@ -247,7 +247,7 @@ app.get("/api/state", async (req, res) => {
   }
 });
 
-app.post("/api/setup", authLimiter, requireCsrf, async (req, res) => {
+app.post("/api/setup", authLimiter, async (req, res) => {
   const client = await pool.connect();
 
   try {
