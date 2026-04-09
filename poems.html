@@ -504,20 +504,117 @@
 
       max-width: 500px;
     }
-    
-    @media (max-width: 960px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
 
-      .poems-layout {
-        grid-template-columns: 1fr;
-      }
+    .top-side {
+      display: grid;
+      gap: 12px;
+      min-width: 260px;
+    }
 
-      .poem-list {
-        max-height: none;
+    .profiles-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .profile-card {
+      border-radius: 18px;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      text-align: left;
+    }
+
+    .profile-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .profile-email {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      margin-bottom: 6px;
+      word-break: break-word;
+    }
+
+    .profile-quote {
+      font-size: 0.95rem;
+      color: #f5ecff;
+      line-height: 1.6;
+      font-style: italic;
+    }
+
+    .floating-heart {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      font-size: 14px;
+
+      color: #ff66b8;
+
+      text-shadow:
+        0 0 6px rgba(255, 77, 166, 0.9),
+        0 0 12px rgba(255, 77, 166, 0.7),
+        0 0 20px rgba(255, 0, 130, 0.5);
+
+      animation: floatHeart 1.8s ease-in-out forwards;
+    }
+
+    @keyframes floatHeart {
+      0% {
+        transform: translateY(0) scale(0.8);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-120px) translateX(var(--drift, 0px)) scale(1.25);
+        opacity: 0;
       }
     }
+
+    .heart-sparkle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+
+      background: radial-gradient(circle, rgba(255, 120, 200, 0.9), transparent);
+
+      opacity: 0.8;
+
+      animation: sparkleFade 0.9s ease-in-out forwards;
+    }
+
+    @keyframes sparkleFade {
+      0% {
+        transform: scale(1);
+        opacity: 0.9;
+      }
+      100% {
+        transform: scale(0.3);
+        opacity: 0;
+      }
+    }
+    
+    @media (max-width: 960px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+
+    .poems-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .poem-list {
+      max-height: none;
+    }
+  }
   </style>
 </head>
 <body>
@@ -554,69 +651,73 @@
             
             <span class="badge" id="userBadge">Private space for two</span>
           </div>
-          <div id="authButtons" class="hidden">
-            <button type="button" class="secondary-btn" id="logoutBtn">Log Out</button>
-          </div>
-        </div>
 
-        <div id="lockedView">
-          <p>Log in to read and write poems in your glowing secret garden.</p>
-        </div>
+          <div class="top-side">
+            <div id="profilesGrid" class="profiles-grid"></div>
 
-        <div id="profileSetupBox" class="hidden">
-          <h3>Finish Your Profile</h3>
-
-          <form id="profileSetupForm">
-            <label>
-              Email
-              <input type="email" id="profileEmail" placeholder="your@email.com" required />
-            </label>
-
-            <label>
-              Short profile quote (optional)
-              <input type="text" id="profileQuote" placeholder="Example: always yours under the stars" />
-            </label>
-
-            <button type="submit" class="primary-btn">Complete Profile</button>
-            <div class="status" id="profileSetupStatus"></div>
-          </form>
-        </div>
-
-        <div id="poemArea" class="hidden">
-          <div class="poems-layout">
-
-            <div class="poem-feed">
-              <h3>Our Poems</h3>
-              <div class="poem-list" id="poemList"></div>
+            <div id="authButtons" class="hidden">
+              <button type="button" class="secondary-btn" id="logoutBtn">Log Out</button>
             </div>
+          </div>
+
+          <div id="lockedView">
+            <p>Log in to read and write poems in your glowing secret garden.</p>
+          </div>
+
+          <div id="profileSetupBox" class="hidden">
+            <h3>Finish Your Profile</h3>
+
+            <form id="profileSetupForm">
+              <label>
+                Email
+                <input type="email" id="profileEmail" placeholder="your@email.com" required />
+              </label>
+
+              <label>
+                Short profile quote (optional)
+                <input type="text" id="profileQuote" placeholder="Example: always yours under the stars" />
+              </label>
+
+              <button type="submit" class="primary-btn">Complete Profile</button>
+              <div class="status" id="profileSetupStatus"></div>
+            </form>
+          </div>
+
+          <div id="poemArea" class="hidden">
+            <div class="poems-layout">
+
+              <div class="poem-feed">
+                <h3>Our Poems</h3>
+                <div class="poem-list" id="poemList"></div>
+              </div>
             
-            <div class="poem-compose">
-              <h3>Write a poem</h3>
+              <div class="poem-compose">
+                <h3>Write a poem</h3>
               
-              <form id="poemForm">
-                <label>
-                  Poem title
-                  <input type="text" id="poemTitle" placeholder="Example: Midnight Apology" required />
-                </label>
+                <form id="poemForm">
+                  <label>
+                    Poem title
+                    <input type="text" id="poemTitle" placeholder="Example: Midnight Apology" required />
+                  </label>
 
-                <label>
-                  Your poem
-                  <textarea id="poemContent" placeholder="Write your love poem here..." required></textarea>
-                </label>
+                  <label>
+                    Your poem
+                    <textarea id="poemContent" placeholder="Write your love poem here..." required></textarea>
+                  </label>
 
-                <button type="submit" class="primary-btn">Save Poem</button>
-                <div class="status" id="poemStatus"></div>
-              </form>
-            </div>
+                  <button type="submit" class="primary-btn">Save Poem</button>
+                  <div class="status" id="poemStatus"></div>
+                </form>
+              </div>
             
+            </div>
           </div>
-        </div>
 
-    <p class="footer-note">Made with black skies, violet light, glowing butterflies, drifting petals, and love.
-    </p>
-  </div>
+        <p class="footer-note">Made with black skies, violet light, glowing butterflies, drifting petals, and love.
+        </p>
+      </div>
 
-  <script>
+      <script>   
     const background = document.getElementById("background");
 
     const lockedView = document.getElementById("lockedView");
@@ -628,6 +729,8 @@
     const profileEmail = document.getElementById("profileEmail");
     const profileQuote = document.getElementById("profileQuote");
     const profileSetupStatus = document.getElementById("profileSetupStatus");
+
+    const profilesGrid = document.getElementById("profilesGrid");
 
     const poemForm = document.getElementById("poemForm");
 
@@ -719,6 +822,14 @@
         ? data.users.map(u => u.name).join(" & ") + " • secret poem garden"
         : "Private space for two";
 
+      profilesGrid.innerHTML = (data.users || []).map(user => `
+        <div class="profile-card">
+          <div class="profile-name">${escapeHtml(user.name || "")}<div>
+          <div class="profile-email">${escapeHtml(user.email || "No email added yet")}<div>
+          <div class="profile-quote">${escapeHtml(user.profile_quote || "Np profile quote yet")}<div>
+        </div>
+      `).join("");
+      
       if (!data.currentUser) {
         window.location.href = "/";
         return;
@@ -787,6 +898,31 @@
       }
     });
 
+    function burstHeartsFromElement(element, count = 10) {
+      if (!element) return;
+
+      const rect = element.getBoundingClientRect();
+
+      for (let i = 0; i < count; i++) {
+        const heart = document.createElement("div");
+        heart.className = "floating-heart";
+        heart.textContent = "♡";
+
+        const startX = rect.left + rect.width / 2 + (Math.random() * 80 - 40);
+        const startY = rect.top + rect.height / 2 + (Math.random() * 20 - 10);
+        const drift = Math.random() * 80 - 40;
+        const size = 8 + Math.random() * 6;
+
+        heart.style.left = startX + "px";
+        heart.style.top = startY + "px";
+        heart.style.fontSize = size + "px";
+
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 1800);
+      }
+    }
+
     poemForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -806,6 +942,7 @@
 
         poemForm.reset();
         setStatus(poemStatus, data.message, "success");
+        burstHeartsFromElement(poemForm, 12);
         await refreshState();
       } catch (error) {
         setStatus(poemStatus, error.message, "error");
