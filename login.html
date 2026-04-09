@@ -558,11 +558,13 @@
               Name
               <select id="loginName"></select>
             </label>
+            
             <label>
               Password
-              <input type="password" id="loginPassword" placeholder="Enter password" />
+              <input type="password" id="loginPassword" placeholder="Enter password" required />
             </label>
-            <button type="submit" class="primary-btn">Enter</button>
+            
+            <button type="submit">Enter</button>
             <div class="status" id="loginStatus"></div>
           </form>
         </div>
@@ -602,7 +604,10 @@
     const loginBox = document.getElementById("loginBox");
     const lockedView = document.getElementById("lockedView");
 
+    const setupForm = document.getElementById("setupForm");
     const loginForm = document.getElementById("loginForm");
+
+    const setupStatus = document.getElementById("setupStatus");
 
     const loginStatus = document.getElementById("loginStatus");
 
@@ -841,7 +846,57 @@
     createSparkles();
     for (let i = 0; i < 22; i++) createPetal();
     for (let i = 0; i < 7; i++) createButterfly();
-    
+
+    setupForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      if (!setupForm.checkValidity()) {
+        setupForm.reportValidity();
+        return;
+      }
+
+      try {
+        const data = await api("/api/setup", {
+          method: "POST",
+          body: JSON.stringify({
+            name1: document.getElementById("name1").value.trim(),
+            pass1: document.getElementById("pass1").value,
+            name2: document.getElementById("name2").value.trim(),
+            pass2: document.getElementById("pass2").value})
+        });
+
+        setupForm.reset();
+        setStatus(setupStatus, data.message, "success");
+        await refreshState();
+      } catch (error) {
+        setStatus(setupStatus, error.message, "error");
+      }
+    });
+
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      if (!loginForm.checkValidity()) {
+        loginForm.resportValidity();
+        return;
+      }
+
+      try {
+        const data = await api("/api/login", {
+          method: "POST",
+          body: JSON.stringify({
+            name: loginName.value,
+            password: loginPassword.value})
+        });
+
+        loginForm.reset();
+        setStatus(loginStatus, data.message, "success");
+        window.location.href = "/poems";
+      } catch (error) {
+        setStatus(loginStatus, error.message, "error");
+      }
+    });
+      
     refreshState();
   </script>
 </body>
