@@ -517,36 +517,6 @@
 
     <main class="layout">
       <aside class="panel">
-        <div id="setupBox">
-          <h2>First Time Setup</h2>
-          <p>Create exactly two accounts for your private poem garden.</p>
-          <div class="divider"></div>
-
-          <form id="setupForm">
-            <label>
-              Person 1 name
-              <input type="text" id="name1" placeholder="Example: Luna" required />
-            </label>
-            
-            <label>
-              Person 1 password
-              <input type="password" id="pass1" placeholder="Create password" required />
-            </label>
-            
-            <label>
-              Person 2 name
-              <input type="text" id="name2" placeholder="Example: Orion" required />
-            </label>
-            
-            <label>
-              Person 2 password
-              <input type="password" id="pass2" placeholder="Create password" required />
-            </label>
-            
-            <button type="submit" class="primary-btn">Create Our Space</button>
-            <div class="status" id="setupStatus"></div>
-          </form>
-        </div>
 
         <div id="loginBox" class="hidden">
           <h2>Couple Login</h2>
@@ -594,8 +564,6 @@
 
         <div id="profileSetupBox" class="hidden">
           <h3>Finish Your Profile</h3>
-          <p style="margin-bottom: 14px; color : #d9c7f5;">
-          </p>
 
           <form id="profileSetupForm">
             <label>
@@ -641,8 +609,6 @@
   <script>
     const background = document.getElementById("background");
 
-    const setupBox = document.getElementById("setupBox");
-    const loginBox = document.getElementById("loginBox");
     const lockedView = document.getElementById("lockedView");
     const poemArea = document.getElementById("poemArea");
     const authButtons = document.getElementById("authButtons");
@@ -653,16 +619,10 @@
     const profileQuote = document.getElementById("profileQuote");
     const profileSetupStatus = document.getElementById("profileSetupStatus");
 
-    const setupForm = document.getElementById("setupForm");
-    const loginForm = document.getElementById("loginForm");
     const poemForm = document.getElementById("poemForm");
 
-    const setupStatus = document.getElementById("setupStatus");
-    const loginStatus = document.getElementById("loginStatus");
     const poemStatus = document.getElementById("poemStatus");
 
-    const loginName = document.getElementById("loginName");
-    const loginPassword = document.getElementById("loginPassword");
     const logoutBtn = document.getElementById("logoutBtn");
 
     const poemTitle = document.getElementById("poemTitle");
@@ -694,18 +654,16 @@
       });
     }
 
-    async function api(url, options = {}) 
+    async function api(url, options = {})
     {
-      console.log("API CALL:", url);
-      console.log("csrfToken before request:", csrfToken);
-      
-      const headers = { "Content-Type": "application/json", ...(options.headers || {}) };
-      
+      const headers = {
+        "Content-Type": "application/json",
+        ...(options.headers || {})
+      };
+
       if (csrfToken) {
         headers["x-csrf-token"] = csrfToken;
       }
-
-      console.log("headers being sent:", headers);
 
       const response = await fetch(url, {
         ...options,
@@ -713,22 +671,29 @@
         credentials: "same-origin"
       });
 
-      const data = await response.json();
-      if (data.csrfToken) {
+      const contentType = response.headers.get("content-type") || "";
+      let data;
+
+      if (contentType.includes("application/json")) {
+        data =await response.json();
+      } else {
+        throw new Error(`Server returned non-JSON response for ${url}`);
+      }
+
+      if (data?.csrfToken) {
         csrfToken = data.csrfToken;
       }
 
       if (!response.ok) {
-        throw new Error(data.error || "Something went wrong.");
+        throw new Error(data?.error || "Something went wrong.");
       }
-
-      return data;
+      
+        return data;
     }
 
     async function refreshState() {
       try {
         const data = await api("/api/state");
-        console.log("/api/state response:", data);
         renderState(data);
       } catch (error) {
         console.error(error);
@@ -744,41 +709,24 @@
         ? data.users.map(u => u.name).join(" & ") + " • secret poem garden"
         : "Private space for two";
 
-      if (!data.configured) {
-        setupBox.classList.remove("hidden");
-        loginBox.classList.add("hidden");
-        lockedView.classList.remove("hidden");
-        poemArea.classList.add("hidden");
-        authButtons.classList.add("hidden");
+      if (!data.currentUser) {
+        window.location.href = "/";
         return;
       }
 
-      loginName.innerHTML = data.users
-        .map(user => '<option value="' + escapeHtml(user.name) + '">' + escapeHtml(user.name) + '</option>')
-        .join("");
+      lockedView.classList.add("hidden");
 
-      setupBox.classList.add("hidden");
-      loginBox.classList.remove("hidden");
-
-      if (!data.currentUser) {
-        lockedView.classList.remove("hidden");
+      if (data.needsProfileSetup) {
+        profileSetupBox.classList.remove("hidden");
         poemArea.classList.add("hidden");
-        authButtons.classList.add("hidden");
-
-      profileSetupBox.classList.add("hidden");
-        
-      } else if (data.needsProfileSetup) {
-        lockedView.classList.add("hidden");
-
-      profileSetupBox.classList.add("hidden");
-        
+      } else {
+        profileSetupBox.classList.add("hidden");
         poemArea.classList.remove("hidden");
-        
-      authButtons.classList.remove("hidden");
-        
+      }
+
+        authButtons.classList.remove("hidden");
         renderPoems(data.poems, data.currentUser);
       }
-    }
 
     function renderPoems(poems, currentUser) {
       if (!poems.length) {
@@ -820,75 +768,12 @@
 
     window.deletePoem = deletePoem;
 
-    setupForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      
-  if (!setupForm.checkValidity()) {
-    setupForm.reportValidity();
-    return;
-  }
-
-  if (!csrfToken) {
-    await refreshState();
-  }
-
-  if (!csrfToken) {
-    setStatus(setUpStatus, "Still loading secure session. Please wait a second and try again.", "error");
-    return;
-  }
-      
-    console.log("SETUP SUBMIT csrfToken=", csrfToken);
-
-  try {
-    const data = await api("/api/setup", {
-      method: "POST",
-      body: JSON.stringify({
-        name1: document.getElementById("name1").value.trim(),
-        pass1: document.getElementById("pass1").value,
-        name2: document.getElementById("name2").value.trim(),
-        pass2: document.getElementById("pass2").value
-      })
-    });
-
-    setupForm.reset();
-    setStatus(setupStatus, data.message, "success");
-    await refreshState();
-  } catch (error) {
-    setStatus(setupStatus, error.message, "error");
-  }
-});
-
-    loginForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-  if (!loginForm.checkValidity()) {
-    loginForm.reportValidity();
-    return;
-  }
-
-  try {
-    const data = await api("/api/login", {
-      method: "POST",
-      body: JSON.stringify({
-        name: loginName.value,
-        password: loginPassword.value
-      })
-    });
-
-    loginForm.reset();
-    setStatus(loginStatus, data.message, "success");
-    await refreshState();
-  } catch (error) {
-    setStatus(loginStatus, error.message, "error");
-  }
-});
-
     logoutBtn.addEventListener("click", async () => {
       try {
         await api("/api/logout", { method: "POST" });
-        await refreshState();
+        window.location.href = "/";
       } catch (error) {
-        setStatus(loginStatus, error.message, "error");
+        setStatus(poemStatus, error.message, "error");
       }
     });
 
