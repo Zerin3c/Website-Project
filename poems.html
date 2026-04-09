@@ -221,11 +221,11 @@
     }
 
     .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
       position: relative;
-      z-index: 1;
-      width: min(1120px, calc(100% - 28px));
-      margin: 0 auto;
-      padding: 26px 0 50px;
+      padding-bottom: 70px;
     }
 
     .hero {
@@ -489,22 +489,27 @@
     }
 
     .footer-note {
-      text-align: center;
-      color: var(--text-dim);
-      margin-top: 22px;
-      font-size: 0.92rem;
+      position: absolute;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: max-content;
+      max-width: calc(100% - 40%);
+      color: #d7c1f5;
+      font-size: 0.95rem;
+      opacity: 0.95;
     }
 
     .poems-layout {
       display: grid;
-      grid-template-columns: 0.9fr 1.6fr;
-      gap: 24px;
-      margin-top: 24px;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 28px;
+      margin-top: 28px;
       align-items: start;
     }
 
-    .poem-compose,
-    .poem-feed {
+    .poem-feed,
+    .poem-compose {
       margin-bottom: 14px;
       color: #f9f0ff;
     }
@@ -513,14 +518,14 @@
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 10px;
-      position: relative;
+      gap: 12px;
     }
 
     #authButtons {
-      position: absolute;
-      top: 0;
-      right: 0;
+      position: static;
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
     }
 
     .profiles-grid {
@@ -668,7 +673,7 @@
 
     .poems-layout {
       display: grid;
-      grid-template-columns: 0.95fr 1.05fr;
+      grid-template-columns: 0.9fr 1.1fr;
       gap: 28px;
       margin-top: 28px;
       align-items: start;
