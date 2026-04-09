@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CONSTELLATIONS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"rel="stylesheet">
   <style>
     :root {
       --bg-1: #030106;
@@ -397,12 +398,17 @@
     .status.error { color: var(--danger); }
 
     .top-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .top-side {
       display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      align-items: center;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
     }
 
     .badge {
@@ -501,48 +507,101 @@
     .poem-feed {
       margin-bottom: 14px;
       color: #f9f0ff;
-
-      max-width: 500px;
     }
 
     .top-side {
-      display: grid;
-      gap: 12px;
-      min-width: 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+      position: relative;
+    }
+
+    #authButtons {
+      position: absolute;
+      top: 0;
+      right: 0;
     }
 
     .profiles-grid {
       display: grid;
-      gap: 10px;
+      gap: 8px;
+      width: 220px;
     }
 
     .profile-card {
-      border-radius: 18px;
-      padding: 14px 16px;
+      border-radius: 16px;
+      padding: 10px 12px;
       background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(180, 120, 255, 0.14);
       text-align: left;
     }
 
-    .profile-name {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 4px;
+    .profile-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
     }
 
-    .profile-email {
-      font-size: 0.88rem;
-      color: var(--text-dim);
-      margin-bottom: 6px;
-      word-break: break-word;
+    .profile-initials {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 1.1rem;
+      line-height: 1;
+
+      font-family: "Great Vibes", cursive;
+
+      color: #f5d2ff;
+
+      background: radial-gradient(circle at 30% 30%, rgba(200, 120, 255, 0.4), rgba(80, 10, 140, 0.9));
+      border: 1px solid rgba(220, 150, 255, 0.5);
+
+      box-shadow:
+        0 0 8px rgba(183, 92, 255, 0.9),
+        0 0 18px rgba(183, 92, 255, 0.7),
+        0 0 32px rgba(140, 40, 255, 0.5),
+        inset 0 0 10px rgba(255, 255, 255, 0.08);
+
+      text-shadow:
+        0 0 4px rgba(255, 220, 255, 0.9),
+        0 0 10px rgba(200, 120, 255, 0.7);
+
+      animation: floatGlow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatGlow {
+      from {
+        transform: translateY(0px) scale(1);
+      }
+      to {
+        transform: translateY(-2px) scale(1.05);
+      }
+    }
+    
+    .profile-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0;
+      color: #c98cff;
+      text-shadow:
+        0 0 6px rgba(201, 140, 255, 0.65),
+        0 0 12px rgba(170, 90, 255, 0.35); 
     }
 
     .profile-quote {
-      font-size: 0.95rem;
-      color: #f5ecff;
-      line-height: 1.6;
+      font-size: 0.88rem;
+      line-height: 1.5;
       font-style: italic;
+      color: #b88cff;
+      text-shadow:
+        0 0 6px rgba(184, 140, 255, 0.45),
+        0 0 12px rgba(140, 80, 255, 0.22);
     }
 
     .floating-heart {
@@ -608,9 +667,26 @@
     }
 
     .poems-layout {
-      grid-template-columns: 1fr;
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 28px;
+      margin-top: 28px;
+      align-items: start;
     }
 
+    .poem-feed {
+      width: 100%;
+    }
+
+    .poem-compose {
+      width: 100%;
+    }
+
+    .poem-feed,
+    .poem-compose {
+      min-height: 440px;
+    }
+      
     .poem-list {
       max-height: none;
     }
@@ -646,7 +722,7 @@
               color: #d9c7f5;
               font-size: 1rem;
             ">
-              ✨ Welcome to our constellations — our private little universe ✨
+              ✨ Our private little universe ✨
             </p>
             
             <span class="badge" id="userBadge">Private space for two</span>
@@ -822,13 +898,25 @@
         ? data.users.map(u => u.name).join(" & ") + " • secret poem garden"
         : "Private space for two";
 
-      profilesGrid.innerHTML = (data.users || []).map(user => `
-        <div class="profile-card">
-          <div class="profile-name">${escapeHtml(user.name || "")}<div>
-          <div class="profile-email">${escapeHtml(user.email || "No email added yet")}<div>
+      profilesGrid.innerHTML = (data.users || []).map(user => {
+        const initials = (user.name || "")
+          .split(".")
+          .map(part => part.trim())
+          .filter(Boolean)
+          .map(part => part.charAt(0).toUpperCase())
+          .join("")
+          .slice(0, 2) || "♡";
+
+        return `
+          <div class="profile-card">
+            <div class="profile-head">
+              <div class="profile-initials">${escapeHtml(initials)}</div>
+            <div class="profile-name">${escapeHtml(user.name || "")}<div>
+          </div>
           <div class="profile-quote">${escapeHtml(user.profile_quote || "Np profile quote yet")}<div>
         </div>
-      `).join("");
+      `;
+      }).join("");
       
       if (!data.currentUser) {
         window.location.href = "/";
