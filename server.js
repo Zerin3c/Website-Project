@@ -95,7 +95,8 @@ function cleanEmail(value) {
 }
 
 function isValidEmail(email) {
-  return /^[^s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim());
+  const value = String(email || "").trim();
+  return value.includes("@") && value.includes(".");
 }
 
 function ensureCsrfToken(req) {
