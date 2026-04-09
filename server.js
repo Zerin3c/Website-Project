@@ -193,7 +193,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/poems", (req, res) => {
-  res.sendFile(path.json(__dirname, "poems.html"));
+  res.sendFile(path.join(__dirname, "poems.html"));
 });
 
 app.get("/api/state", async (req, res) => {
