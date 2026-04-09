@@ -417,10 +417,11 @@
     .poem-list {
       display: grid;
       gap: 14px;
-      max-height: 560px;
+      max-height: 650px;
       overflow: auto;
-      padding-right: 4px;
+      padding-right: 6px;
       margin-top: 14px;
+      scroll-behavior: smooth;
     }
 
     .poem-card {
@@ -487,8 +488,26 @@
       font-size: 0.92rem;
     }
 
+    .poems-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+      align-items: start;
+    }
+
+    .poem-compose,
+    .poem-feed {
+      margin-bottom: 14px;
+      color: #f9f0ff;
+    }
+    
     @media (max-width: 960px) {
       .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .poems-layout {
         grid-template-columns: 1fr;
       }
 
@@ -582,25 +601,34 @@
         </div>
 
         <div id="poemArea" class="hidden">
-          <form id="poemForm">
-            <label>
-              Poem title
-              <input type="text" id="poemTitle" placeholder="Example: Midnight Apology" required />
-            </label>
+          <div class="poems-layout">
 
-            <label>
-              Your poem
-              <textarea id="poemContent" placeholder="Write your love poem here..." required></textarea>
-            </label>
+            <div class="poem-feed">
+              <h3>Our Poems</h3>
+              <div class="poem-list" id="poemList"></div>
+            </div>
+            
+            <div class="poem-compose">
+              <h3>Write a poem</h3>
+              
+              <form id="poemForm">
+                <label>
+                  Poem title
+                  <input type="text" id="poemTitle" placeholder="Example: Midnight Apology" required />
+                </label>
 
-            <button type="submit" class="primary-btn">Save Poem</button>
-            <div class="status" id="poemStatus"></div>
-          </form>
+                <label>
+                  Your poem
+                  <textarea id="poemContent" placeholder="Write your love poem here..." required></textarea>
+                </label>
 
-          <div class="poem-list" id="poemList"></div>
+                <button type="submit" class="primary-btn">Save Poem</button>
+                <div class="status" id="poemStatus"></div>
+              </form>
+            </div>
+            
+          </div>
         </div>
-      </section>
-    </main>
 
     <p class="footer-note">Made with black skies, violet light, glowing butterflies, drifting petals, and love.
     </p>
