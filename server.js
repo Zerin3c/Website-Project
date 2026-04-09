@@ -189,7 +189,11 @@ async function initDB() {
 app.use(express.static(path.join(__dirname)));
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"))
+  res.sendFile(path.join(__dirname, "login.html"))
+});
+
+app.get("/poems", (req, res) => {
+  res.sendFile(path.json(__dirname, "poems.html"));
 });
 
 app.get("/api/state", async (req, res) => {
@@ -397,6 +401,17 @@ app.post("/api/profile-setup", requireAuth, requireCsrf, authLimiter, async (req
     console.error(error);
     res.status(500).json({ error: "Could not save profile." });
   }
+});
+
+app.post("/api/logout", requireAuth, requireCsrf, (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ error: "Logout failed." });
+    }
+
+    res.clearCookie("love_poem_sid");
+    res.json({ message: "Logged out." });
+  });
 });
 
 app.post("/api/poems", requireAuth, requireCsrf, writeLimiter, async (req, res) => {
