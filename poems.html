@@ -512,6 +512,9 @@
     }
 
     .poem-feed {
+      display: flex;
+      flex-direction: column;
+      align-items: felx-start;
       width: 100%;
       max-width: 340p;
     }
@@ -784,7 +787,9 @@
 
               <div class="poem-feed">
                 <h3>Our Poems</h3>
-                <div class="poem-list" id="poemList"></div>
+                <p class="poem-feed-copy">Read all our saved poems on a seperate page.
+                </p>
+                <button type="button" class="primary-btn" id="viewPoemsBtn">Open Our Poems</button>
               </div>
             
               <div class="poem-compose">
@@ -819,6 +824,8 @@
     const lockedView = document.getElementById("lockedView");
     const poemArea = document.getElementById("poemArea");
     const authButtons = document.getElementById("authButtons");
+
+    const viewPoemsBtn = document.getElementById("viewPoemsBtn");
 
     const profileSetupBox = document.getElementById("profileSetupBox");
     const profileSetupForm = document.getElementById("profileSetupForm");
@@ -1057,6 +1064,10 @@
       }
     });
 
+    viewPoemsBtn?.addEventListener("click", () => {
+      window.location.href = "/written-poems";
+    });
+
     function createSparkles() {
       for (let i = 0; i < 60; i++) {
         const sparkle = document.createElement("div");
@@ -1208,7 +1219,7 @@
     for (let i = 0; i < 22; i++) createPetal();
     for (let i = 0; i < 7; i++) createButterfly();
 
-    profileSetupForm.addEventListener("submit", async (e) => {
+    profileSetupForm?.addEventListener("submit", async (e) => {
       e.preventDefault();
       
     if (!profileSetupForm.checkValidity()) {
