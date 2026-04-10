@@ -703,15 +703,6 @@
       window.location.href = "/poems";
     });
 
-    logoutBtn.addEventListener("click", async () => {
-      try {
-        await api("/api/logout", { method: "POST" });
-        window.location.href = "/";
-      } catch (error) {
-        setStatus(pageStatus, error.message, "error");
-      }
-    });
-
     function createSparkles() {
       for (let i = 0; i < 60; i++) {
         const sparkle = document.createElement("div");
