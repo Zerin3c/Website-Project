@@ -1,1 +1,645 @@
-body 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Our Written Poems</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --bg-1: #12071f;
+      --bg-2: #1b0d2d;
+      --bg-3: #2b1243;
+      --bg-4: #08040f;
+
+      --panel: rgba(33, 16, 54, 0.82);
+      --panel-2: rgba(64, 28, 96, 0.72);
+      --border: rgba(206, 175, 255, 0.18);
+
+      --text: #f7ebff;
+      --text-soft: #e7d4ff;
+      --text-dim: #cbaef5;
+
+      --shadow: 0 22px 60px rgba(0, 0, 0, 0.32);
+      --glow: 0 0 40px rgba(170, 100, 255, 0.16);
+
+      --success: #d9ffd8;
+      --danger: #ffbfd3;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: var(--text);
+      font-family: "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 15% 12%, rgba(154, 92, 255, 0.22), transparent 18%),
+        radial-gradient(circle at 84% 20%, rgba(255, 143, 216, 0.10), transparent 16%),
+        radial-gradient(circle at 50% 85%, rgba(126, 62, 255, 0.16), transparent 20%),
+        linear-gradient(180deg, var(--bg-4) 0%, var(--bg-2) 35%, var(--bg-1) 100%);
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(255,255,255,0.85) 0 1px, transparent 2px),
+        radial-gradient(circle at 72% 22%, rgba(255,255,255,0.7) 0 1px, transparent 2px),
+        radial-gradient(circle at 82% 64%, rgba(255,255,255,0.7) 0 1px, transparent 2px),
+        radial-gradient(circle at 28% 75%, rgba(255,255,255,0.55) 0 1px, transparent 2px),
+        radial-gradient(circle at 55% 40%, rgba(255,255,255,0.4) 0 1px, transparent 2px);
+      opacity: 0.22;
+      animation: starsPulse 8s linear infinite;
+    }
+
+    @keyframes starsPulse {
+      0% { opacity: 0.16; }
+      50% { opacity: 0.30; }
+      100% { opacity: 0.16; }
+    }
+
+    .background {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .mist {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.20;
+      mix-blend-mode: screen;
+      animation: floatMist 18s ease-in-out infinite alternate;
+    }
+
+    .mist.one {
+      width: 34vw;
+      height: 34vw;
+      min-width: 260px;
+      min-height: 260px;
+      left: -8%;
+      top: -7%;
+      background: radial-gradient(circle, rgba(154, 92, 255, 0.95), rgba(154, 92, 255, 0.06) 60%, transparent 75%);
+    }
+
+    .mist.two {
+      width: 28vw;
+      height: 28vw;
+      min-width: 220px;
+      min-height: 220px;
+      right: -6%;
+      top: 18%;
+      background: radial-gradient(circle, rgba(255, 120, 215, 0.55), rgba(154, 92, 255, 0.05) 60%, transparent 75%);
+      animation-duration: 21s;
+    }
+
+    .mist.three {
+      width: 34vw;
+      height: 34vw;
+      min-width: 280px;
+      min-height: 280px;
+      left: 20%;
+      bottom: -15%;
+      background: radial-gradient(circle, rgba(109, 43, 255, 0.70), rgba(109, 43, 255, 0.05) 60%, transparent 75%);
+      animation-duration: 17s;
+    }
+
+    @keyframes floatMist {
+      from { transform: translate(0, 0) scale(1); }
+      to { transform: translate(26px, 36px) scale(1.12); }
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: white;
+      box-shadow:
+        0 0 8px rgba(255,255,255,0.9),
+        0 0 16px rgba(185, 128, 255, 0.9),
+        0 0 28px rgba(185, 128, 255, 0.45);
+      animation: sparkleRise linear infinite;
+      opacity: 0;
+    }
+
+    @keyframes sparkleRise {
+      0% { transform: translateY(0) scale(0.8); opacity: 0; }
+      10% { opacity: 0.85; }
+      50% { opacity: 0.55; }
+      100% { transform: translateY(-140px) scale(1.15); opacity: 0; }
+    }
+
+    .petal {
+      position: fixed;
+      width: 24px;
+      height: 24px;
+      pointer-events: none;
+      z-index: 5;
+      animation: petalFall linear infinite;
+      transform-origin: center;
+      filter: drop-shadow(0 0 20px rgba(255, 120, 215, 0.12));
+    }
+
+    .petal svg,
+    .butterfly svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    @keyframes petalFall {
+      0% {
+        transform: translateY(-12vh) translateX(0) rotate(0deg) scale(0.8);
+        opacity: 0;
+      }
+      8% { opacity: 0.95; }
+      35% {
+        transform: translateY(28vh) translateX(24px) rotate(110deg) scale(0.95);
+        opacity: 0.9;
+      }
+      65% {
+        transform: translateY(64vh) translateX(-18px) rotate(220deg) scale(1);
+        opacity: 0.82;
+      }
+      100% {
+        transform: translateY(115vh) translateX(36px) rotate(340deg) scale(1.08);
+        opacity: 0.05;
+      }
+    }
+
+    .butterfly {
+      position: fixed;
+      width: 84px;
+      height: 60px;
+      animation: butterflyDrift linear infinite;
+      filter:
+        drop-shadow(0 0 10px rgba(220, 170, 255, 0.22))
+        drop-shadow(0 0 24px rgba(123, 44, 255, 0.18))
+        drop-shadow(0 0 42px rgba(85, 25, 170, 0.12));
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    .butterfly .wing-left,
+    .butterfly .wing-right {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: wingFlap 0.9s ease-in-out infinite;
+    }
+
+    @keyframes wingFlap {
+      0%, 100% { transform: scaleX(1) rotate(0deg); }
+      50% { transform: scaleX(0.72) rotate(6deg); }
+    }
+
+    @keyframes butterflyDrift {
+      0% {
+        transform: translate(-10vw, 0vh) scale(0.82) rotate(-4deg);
+        opacity: 0;
+      }
+      10% { opacity: 0.95; }
+      40% {
+        transform: translate(28vw, -5vh) scale(1) rotate(2deg);
+        opacity: 1;
+      }
+      70% {
+        transform: translate(64vw, 4vh) scale(0.96) rotate(-2deg);
+        opacity: 0.92;
+      }
+      100% {
+        transform: translate(110vw, -2vh) scale(0.84) rotate(3deg);
+        opacity: 0;
+      }
+    }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      padding: 24px 18px 40px;
+      z-index: 1;
+    }
+
+    .panel {
+      border-radius: 26px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, var(--panel), var(--panel-2));
+      box-shadow: var(--shadow);
+      padding: 22px 22px 30px;
+      backdrop-filter: blur(12px);
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .written-poems-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .written-poems-top h2 {
+      color: var(--text);
+      font-size: 2rem;
+      margin: 0;
+      text-shadow: 0 0 14px rgba(220, 190, 255, 0.22);
+    }
+
+    .written-poems-subtitle {
+      color: var(--text-soft);
+      line-height: 1.6;
+      margin-bottom: 16px;
+      font-size: 0.98rem;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .poem-list {
+      display: grid;
+      gap: 14px;
+      max-height: none;
+      overflow: visible;
+      margin-top: 12px;
+    }
+
+    .poem-card {
+      border-radius: 22px;
+      padding: 18px;
+      border: 1px solid rgba(200, 162, 255, 0.14);
+      background: linear-gradient(180deg, rgba(31, 14, 50, 0.95), rgba(17, 8, 28, 0.98));
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.32);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .poem-card::before {
+      content: "";
+      position: absolute;
+      right: -30px;
+      bottom: -40px;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(180, 130, 255, 0.14), transparent 70%);
+    }
+
+    .poem-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 12px;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .poem-title {
+      font-size: 1.14rem;
+      color: #f9f0ff;
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+
+    .poem-meta {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+
+    .poem-text {
+      white-space: pre-wrap;
+      line-height: 1.85;
+      color: #f5ecff;
+      font-size: 1rem;
+      margin-top: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .empty-state {
+      border-radius: 18px;
+      border: 1px dashed rgba(200, 162, 255, 0.2);
+      background: rgba(255,255,255,0.03);
+      padding: 24px;
+      text-align: center;
+      color: var(--text-soft);
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 13px 18px;
+      font-size: 0.98rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+    }
+
+    .primary-btn {
+      color: white;
+      background: linear-gradient(135deg, #a45cff, #6f2bff);
+      box-shadow: 0 10px 24px rgba(111, 43, 255, 0.28), 0 0 18px rgba(164, 92, 255, 0.18);
+    }
+
+    .secondary-btn {
+      color: white;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.08);
+      width: auto;
+      padding: 8px 14px;
+    }
+
+    .danger-btn {
+      color: white;
+      background: rgba(255, 120, 170, 0.18);
+      border: 1px solid rgba(255, 160, 200, 0.18);
+      padding: 8px 14px;
+    }
+
+    .status {
+      min-height: 22px;
+      color: var(--text-dim);
+      font-size: 0.93rem;
+      margin-top: 8px;
+    }
+
+    .status.success { color: var(--success); }
+    .status.error { color: var(--danger); }
+
+    @media (max-width: 960px) {
+      .written-poems-top {
+        align-items: flex-start;
+      }
+
+      .written-poems-top h2 {
+        font-size: 1.6rem;
+      }
+
+      .top-actions {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="background" id="background">
+    <div class="mist one"></div>
+    <div class="mist two"></div>
+    <div class="mist three"></div>
+  </div>
+
+  <div class="app">
+    <section class="panel">
+      <div class="written-poems-top">
+        <h2>Our Written Poems</h2>
+
+        <div class="top-actions">
+          <button type="button" class="secondary-btn" id="backToGardenBtn">Back to Garden</button>
+          <button type="button" class="secondary-btn" id="logoutBtn">Log Out</button>
+        </div>
+      </div>
+
+      <p class="written-poems-subtitle">
+        Every saved poem in one place, glowing under violet skies.
+      </p>
+
+      <div class="status" id="pageStatus"></div>
+      <div class="poem-list" id="poemList"></div>
+    </section>
+  </div>
+
+  <script>
+    const background = document.getElementById("background");
+    const poemList = document.getElementById("poemList");
+    const pageStatus = document.getElementById("pageStatus");
+    const backToGardenBtn = document.getElementById("backToGardenBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    function setStatus(element, message = "", type = "") {
+      if (!element) return;
+      element.textContent = message;
+      element.className = "status";
+      if (type) element.classList.add(type);
+    }
+
+    async function api(url, options = {}) {
+      const response = await fetch(url, {
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          ...(options.headers || {})
+        },
+        ...options
+      });
+
+      let data = {};
+      try {
+        data = await response.json();
+      } catch {
+        data = {};
+      }
+
+      if (!response.ok) {
+        throw new Error(data.error || "Something went wrong.");
+      }
+
+      return data;
+    }
+
+    function formatDate(value) {
+      if (!value) return "";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "";
+      return date.toLocaleString();
+    }
+
+    function escapeHtml(value = "") {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function renderPoems(poems = []) {
+      if (!poems.length) {
+        poemList.innerHTML = `
+          <div class="empty-state">
+            No poems yet. Go back to the garden and write the first one.
+          </div>
+        `;
+        return;
+      }
+
+      poemList.innerHTML = poems.map((poem) => `
+        <article class="poem-card">
+          <div class="poem-header">
+            <div>
+              <div class="poem-title">${escapeHtml(poem.title || "Untitled")}</div>
+              <div class="poem-meta">
+                By ${escapeHtml(poem.author || "Unknown")} • ${escapeHtml(formatDate(poem.created_at || poem.date))}
+              </div>
+            </div>
+            <button type="button" class="danger-btn" onclick="deletePoem('${poem.id}')">Delete</button>
+          </div>
+          <div class="poem-text">${escapeHtml(poem.content || "")}</div>
+        </article>
+      `).join("");
+    }
+
+    async function loadPoems() {
+      try {
+        setStatus(pageStatus, "Loading poems...");
+        let poems = [];
+
+        try {
+          const data = await api("/api/state");
+          poems = Array.isArray(data.poems) ? data.poems : [];
+        } catch {
+          const data = await api("/api/poems");
+          poems = Array.isArray(data) ? data : (Array.isArray(data.poems) ? data.poems : []);
+        }
+
+        renderPoems(poems);
+        setStatus(pageStatus, "");
+      } catch (error) {
+        setStatus(pageStatus, error.message, "error");
+        poemList.innerHTML = `
+          <div class="empty-state">
+            Could not load poems.
+          </div>
+        `;
+      }
+    }
+
+    async function deletePoem(id) {
+      const confirmed = confirm("Delete this poem?");
+      if (!confirmed) return;
+
+      try {
+        const data = await api("/api/poems/" + id, { method: "DELETE" });
+        setStatus(pageStatus, data.message || "Poem deleted.", "success");
+        await loadPoems();
+      } catch (error) {
+        setStatus(pageStatus, error.message, "error");
+      }
+    }
+
+    window.deletePoem = deletePoem;
+
+    backToGardenBtn.addEventListener("click", () => {
+      window.location.href = "/poems";
+    });
+
+    logoutBtn.addEventListener("click", async () => {
+      try {
+        await api("/api/logout", { method: "POST" });
+        window.location.href = "/";
+      } catch (error) {
+        setStatus(pageStatus, error.message, "error");
+      }
+    });
+
+    function createSparkles() {
+      for (let i = 0; i < 60; i++) {
+        const sparkle = document.createElement("div");
+        sparkle.className = "sparkle";
+        sparkle.style.left = Math.random() * 100 + "vw";
+        sparkle.style.top = 20 + Math.random() * 80 + "vh";
+        sparkle.style.animationDuration = 4 + Math.random() * 6 + "s";
+        sparkle.style.animationDelay = Math.random() * 8 + "s";
+        background.appendChild(sparkle);
+      }
+    }
+
+    function createPetal() {
+      const petal = document.createElement("div");
+      petal.className = "petal";
+      petal.style.left = Math.random() * 100 + "vw";
+      petal.style.animationDuration = 10 + Math.random() * 10 + "s";
+      petal.style.animationDelay = Math.random() * 8 + "s";
+      petal.innerHTML = `
+        <svg viewBox="0 0 64 64" fill="none">
+          <path d="M31.5 8C42 14 49 23 49 34C49 45 41 54 31.5 58C22 54 14 45 14 34C14 23 21 14 31.5 8Z"
+            fill="url(#petalGradient)"/>
+          <defs>
+            <linearGradient id="petalGradient" x1="14" y1="10" x2="52" y2="58" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#ffd0ea"/>
+              <stop offset="0.48" stop-color="#ff9ed2"/>
+              <stop offset="1" stop-color="#c567ff"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      `;
+      background.appendChild(petal);
+    }
+
+    function createButterfly() {
+      const butterfly = document.createElement("div");
+      butterfly.className = "butterfly";
+      butterfly.style.left = "-10vw";
+      butterfly.style.top = 10 + Math.random() * 60 + "vh";
+      butterfly.style.animationDuration = 18 + Math.random() * 12 + "s";
+      butterfly.style.animationDelay = Math.random() * 10 + "s";
+      butterfly.innerHTML = `
+        <svg viewBox="0 0 120 80" fill="none">
+          <path class="wing-left" d="M58 40C44 12 13 8 8 28C4 44 20 56 39 57C25 63 21 74 32 77C45 80 55 69 60 46"
+            fill="url(#wingLeft)"/>
+          <path class="wing-right" d="M62 40C76 12 107 8 112 28C116 44 100 56 81 57C95 63 99 74 88 77C75 80 65 69 60 46"
+            fill="url(#wingRight)"/>
+          <path d="M60 18C56 26 56 36 60 46C64 36 64 26 60 18Z" fill="#f7dcff"/>
+          <path d="M60 46C57 52 56 59 60 66C64 59 63 52 60 46Z" fill="#f1c8ff"/>
+          <path d="M56 16C51 8 46 6 42 6" stroke="#f2d5ff" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M64 16C69 8 74 6 78 6" stroke="#f2d5ff" stroke-width="2.5" stroke-linecap="round"/>
+          <defs>
+            <linearGradient id="wingLeft" x1="8" y1="15" x2="60" y2="68" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#f7d4ff"/>
+              <stop offset="0.55" stop-color="#cf8bff"/>
+              <stop offset="1" stop-color="#7b2cff"/>
+            </linearGradient>
+            <linearGradient id="wingRight" x1="112" y1="15" x2="60" y2="68" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#ffe2f3"/>
+              <stop offset="0.55" stop-color="#d39cff"/>
+              <stop offset="1" stop-color="#7b2cff"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      `;
+      background.appendChild(butterfly);
+    }
+
+    createSparkles();
+    for (let i = 0; i < 22; i++) createPetal();
+    for (let i = 0; i < 7; i++) createButterfly();
+
+    loadPoems();
+  </script>
+</body>
+</html>
