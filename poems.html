@@ -353,7 +353,8 @@
 
     textarea {
       min-height: 180px;
-      resize: vertical;
+      resize: none;
+      overflow: hidden;
     }
 
     button {
@@ -526,7 +527,7 @@
       width: 100%;
       max-width: 900px;
       margin: 0 auto;
-      min-height: 440px;
+      min-height: 550px;
     }
 
     #poemForm {
@@ -865,6 +866,8 @@
 
     const viewPoemsBtn = document.getElementById("viewPoemsBtn");
 
+    const textarea = document.getElementById("poemContent");
+
     const profileSetupBox = document.getElementById("profileSetupBox");
     const profileSetupForm = document.getElementById("profileSetupForm");
     const profileEmail = document.getElementById("profileEmail");
@@ -1094,6 +1097,7 @@
         });
 
         poemForm.reset();
+        textarea.style.height ="auto";
         setStatus(poemStatus, data.message, "success");
         burstHeartsFromElement(poemForm, 12);
         await refreshState();
@@ -1104,6 +1108,11 @@
 
     viewPoemsBtn?.addEventListener("click", () => {
       window.location.href = "/written-poems";
+    });
+
+    textarea.addEventListener("input", () => {
+      textarea.style.height = "auto";
+      textare.style.height = textarea.scrollHeight + "px";
     });
 
     function createSparkles() {
