@@ -635,7 +635,7 @@
           <div class="poem-title">${escapeHtml(poem.title || "Untitled")}</div>
           <div class="poem-meta">
             ${poem.author ? "by " + poem.author + " • " : ""}
-            ${poem.createdAt || poem.created_at) ? new Date(poem.createdAt || poem.created_at).toLocaleString([] , {
+            ${(poem.createdAt || poem.created_at) ? new Date(poem.createdAt || poem.created_at).toLocaleString([] , {
               dateStyle: "medium",
               timeStyle: "short"
             }) : ""}
