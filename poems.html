@@ -522,11 +522,21 @@
     }
     
     .poem-compose {
-      width: 100%;
-      max-width: 700px;
+      width: min(700px - 100%;
+      align-self: center;
       margin: 0 auto;
     }
 
+    #poemForm {
+      width: 100%;
+    }
+
+    .poem-compose h3,
+    .poem-compose label {
+      display: block;
+      width: 100%;
+    }
+    
     .top-poems-btn {
       display: flex;
       justify-content: center;
@@ -951,7 +961,7 @@
               <div class="profile-initials">${escapeHtml(initials)}</div>
             <div class="profile-name">${escapeHtml(user.name || "")}<div>
           </div>
-          <div class="profile-quote">${escapeHtml(user.profile_quote || "Np profile quote yet")}<div>
+          <div class="profile-quote">${escapeHtml(user.profile_quote || "No profile quote yet")}<div>
         </div>
       `;
       }).join("");
