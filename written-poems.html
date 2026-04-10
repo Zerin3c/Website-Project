@@ -494,6 +494,36 @@
     .status.success { color: var(--success); }
     .status.error { color: var(--danger); }
 
+    .edit-poem-form {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .edit-poem-form input,
+    .edit-poem-form textarea {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid rgba(206, 175, 255, 0.16);
+      background: rgba(7, 3, 14, 0.88);
+      color: #f7ebff;
+      padding: 13px 15px;
+      font-size: 0.98rem;
+      outline: none;
+    }
+
+    .edit-poem-form textarea {
+      min-height: 220px;
+      resize: vertical;
+    }
+
+    .edit-poem-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 4px;
+    }
+
     @media (max-width: 960px) {
       .written-poems-top {
         align-items: flex-start;
@@ -589,48 +619,45 @@
     }
 
     function renderPoems(poems = []) {
-      if (!poems.length) {
-        poemList.innerHTML = `
-          <div class="empty-state">
-            No poems yet. Go back to the garden and write the first one.
-          </div>
-        `;
-        return;
-      }
+  if (!poems.length) {
+    poemList.innerHTML = `
+      <div class="empty-state">
+        No poems yet. Go back to the garden and write the first one.
+      </div>
+    `;
+    return;
+  }
 
-      poemList.innerHTML = poems.map((poem) => `
-        <article class="poem-card">
-          <div class="poem-header">
-            <div>
-              <div class="poem-title">${escapeHtml(poem.title || "Untitled")}</div>
-              <div class="poem-meta">${new Date(poem.createdAt).toLocaleString()}
-              </div>
+  poemList.innerHTML = poems.map((poem) => `
+    <article class="poem-card" data-id="${poem.id}">
+      <div class="poem-header">
+        <div>
+          <div class="poem-title">${escapeHtml(poem.title || "Untitled")}</div>
+          <div class="poem-meta">${new Date(poem.createdAt).toLocaleString()}</div>
+        </div>
+
+        <div class="poem-actions">
+          <div class="options-wrapper">
+            <button type="button" class="options-btn" onclick="toggleMenu(this)">⋯</button>
+
+            <div class="options-menu">
+              <button type="button" onclick="editPoems('${poem.id}')">Edit</button>
+              <button type="button" onclick="deletePoem('${poem.id}')">Delete</button>
             </div>
-
-            <div class="poem-actions">
-              <div class="options-wrapper">
-
-              <button class="options-btn" onclick="toggleMenu(this)">...</button>
-
-              <div class="options-menu">
-              <button onclick="editPoems('${poem.id}')">Edit</button>
-              <button onclick="deletePoems('${poem.id}')">Delete</button>
-            </div>
-            
           </div>
         </div>
-        
-        <div class="poem-text">${poem.content}</div>
-        
-      </article>
-    `).join("");
-    }
+      </div>
+
+      <div class="poem-text">${escapeHtml(poem.content || "")}</div>
+    </article>
+  `).join("");
+}
 
     function toggleMenu(btn) {
       const menu = btn.nextElementSibling;
 
     document.querySelectorAll(".options-menu").forEach((m) => {
-        if (m !== menu) m.style.display = "none";
+        if (m !== menu) menu.style.display = "none";
       });
 
       menu.style.display = menu.style.display === "block" ? "none" : "block";
@@ -696,6 +723,97 @@
         setStatus(pageStatus, error.message, "error");
       }
     }
+
+    function editPoems(id) {
+      const card = document.querySelector(`.poem-card[data-id="${id}"]`);
+      if (!card) return;
+
+      const titleEl = card.querySelector(".poem-title");
+      const textEl = card.querySelector(".poem-text");
+
+      const currentTitle = titleEl ? titleEl.textContent.trim() : "";
+      const currentText = textEl ? textEl.textContent : "";
+
+      const existingEditor = card.querySelector(".edit-poem-form");
+      if (existingEditor) return;
+
+      const editor = document.createElement("div");
+      editor.className = "edit-poem-form";
+      editor.innerHTML = `
+        <input type="text" class="edit-title-input" value="${escapeAttribute(currentTitle)}" />
+        <textarea class="edit-content-input">${escapeHtml(currentText)}</textarea>
+        <div class="edit-poem-actions">
+          <button type="button" class="secondary-btn" onclick="cancelEditPoem('${id}')">Cancel</button>
+          <button type="button" class="primary-btn" onclick="saveEditPoem('${id}')">Save</button>
+       </div>
+     `;
+
+     titleEl.style.display = "none";
+     textEl.style.display = "none";
+
+     const metaEl = card.querySelector(".poem-meta");
+     if (metaEl) metaEl.style.opacity = "0.6";
+
+     textEl.insertAdjacentElement("afterend", editor);
+
+     const textarea = editor.querySelector(".edit-content-input");
+     textarea.style.height = "auto";
+     textarea.style.height = textarea.scrollHeight + "px";
+   }
+
+  function cancelEditPoem(id) {
+    const card = document.querySelector(`.poem-card[data-id="${id}"]`);
+    if (!card) return;
+
+    const editor = card.querySelector(".edit-poem-form");
+    if (editor) editor.remove();
+
+    const titleEl = card.querySelector(".poem-title");
+    const textEl = card.querySelector(".poem-text");
+    const metaEl = card.querySelector(".poem-meta");
+
+    if (titleEl) titleEl.style.display = "";
+    if (textEl) textEl.style.display = "";
+    if (metaEl) metaEl.style.opacity = "";
+  }
+
+  async function saveEditPoem(id) {
+    const card = document.querySelector(`.poem-card[data-id="${id}"]`);
+    if (!card) return;
+
+    const titleInput = card.querySelector(".edit-title-input");
+    const contentInput = card.querySelector(".edit-content-input");
+
+    const title = titleInput.value.trim();
+    const content = contentInput.value.trim();
+
+    if (!title || !content) {
+      setStatus(pageStatus, "Title and poem text cannot be empty.", "error");
+      return;
+    }
+
+    function escapeAttribute(value = "") {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll('"', "&quot;")
+        .replaceAll(">", "&gt;");
+    }
+
+    try {
+      const data = await api("/api/poems/" + id, {
+        method: "PUT",
+        body: JSON.stringify({
+          title,
+          content
+        })
+      });
+
+      setStatus(pageStatus, data.message || "Poem updated.", "success");
+      await loadPoems();
+    } catch (error) {
+      setStatus(pageStatus, error.message, "error");
+    }
+  }
 
     window.deletePoem = deletePoem;
 
@@ -776,6 +894,13 @@
     for (let i = 0; i < 7; i++) createButterfly();
 
     loadPoems();
+
+    document.addEventListener("input", (e) => {
+      if(e.target.classList.contains("edit-content-input"))
+        e.target.style.height = "auto";
+        e.target.style.height = e.target.scrollHeight + "px";
+      }
+    });
   </script>
 </body>
 </html>
