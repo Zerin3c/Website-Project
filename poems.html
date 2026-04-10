@@ -487,11 +487,10 @@
     }
 
     .poems-layout {
-      display: grid;
-      grid-template-columns: 0.8fr 1.2fr;
-      gap: 34px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       margin-top: 28px;
-      align-items: start;
     }
 
     .poem-feed,
@@ -518,12 +517,17 @@
     }
     
     .poem-compose {
-      width: 520px;
-      max-width: 100%;
-      min-height: 440px;
-      justify-self: end;
+      width: 640px;
+      max-height: 100%;
+      min-height: 480px;
     }
-      
+
+    .top-poems-btn {
+      display: flex;
+      justify-content: center;
+      margin: 20px auto;
+    }
+    
     .top-side {
       display: flex;
       flex-direction: column;
@@ -780,12 +784,10 @@
           <div id="poemArea" class="hidden">
             <div class="poems-layout">
 
-              <div class="poem-feed">
-                <h3>Our Poems</h3>
-                
-                <p>Read all our saved poems on a seperate page.</p>
-                
-                <button type="button" class="primary-btn" id="viewPoemsBtn">Open Our Poems</button>
+              <div class="top-poems-btn">
+                <button type="button" class="primary-btn" id="viewPoemsBtn">
+                  Our Poems
+                </button>
               </div>
             
               <div class="poem-compose">
