@@ -37,7 +37,7 @@
       min-height: 100vh;
       overflow-x: hidden;
       color: var(--text);
-      font-family: "Segoe UI", Arial, sans-serif;
+      font-family: 'Dancing Script', cursive;
       background:
         radial-gradient(circle at 15% 12%, rgba(154, 92, 255, 0.22), transparent 18%),
         radial-gradient(circle at 84% 20%, rgba(255, 143, 216, 0.10), transparent 16%),
@@ -264,10 +264,30 @@
     }
 
     .written-poems-subtitle {
-      color: var(--text-soft);
-      line-height: 1.6;
-      margin-bottom: 16px;
-      font-size: 0.98rem;
+      color: #e4d8ff;
+      text-align: center;
+      max-width: 680px;
+      margin: 12px auto 26px;
+
+      font-size: 1.02rem;
+      line-height: 1.7;
+
+      opacity: 0.92;
+
+      text-shadow: 0 0 12px rgba(156, 89, 255, 0.15);
+
+      animation: fadeSoft 0.8s ease;
+    }
+      
+    @keyframes fadeSoft {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 0.92;
+        transform: translateY(0);
+      }
     }
 
     .top-actions {
@@ -285,15 +305,29 @@
     }
 
     .poem-card {
-      border-radius: 22px;
-      padding: 18px;
+      border-radius: 24px;
+      padding: 22px;
       border: 1px solid rgba(200, 162, 255, 0.14);
-      background: linear-gradient(180deg, rgba(31, 14, 50, 0.95), rgba(17, 8, 28, 0.98));
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.32);
+      background: linear-gradient(180deg, rgba(33, 16, 52, 0.92), rgba(18, 9, 30, 0.96));
+      box-shadow: 
+        0 12px 30px rgba(0, 0, 0, 0.28),
+        inset 0 0 18px rgba(255, 255, 255, 0.03);
       position: relative;
       overflow: hidden;
+      animation: poemFade 0.45s ease;
     }
 
+    @keyframes poemFade {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
     .poem-card::before {
       content: "";
       position: absolute;
@@ -330,12 +364,13 @@
 
     .poem-text {
       white-space: pre-wrap;
-      line-height: 1.85;
-      color: #f5ecff;
-      font-size: 1rem;
-      margin-top: 10px;
+      line-height: 2;
+      color: #f6ecff;
+      font-size: 1.03rem;
+      margin-top: 12px;
       position: relative;
       z-index: 1;
+      font-family: Georgia, "Times New Roman", serif;
     }
 
     .empty-state {
@@ -367,6 +402,19 @@
       box-shadow: 0 10px 24px rgba(111, 43, 255, 0.28), 0 0 18px rgba(164, 92, 255, 0.18);
     }
 
+    #viewPoemsBtn {
+      animations: softPulse 2.8s ease-in-out infinite;
+    }
+
+    @keyframes softPulse {
+      0%, 100% {
+        box-shadow: 0 0 14px rgba(196, 120, 255, 0.22);
+      }
+      50% {
+        box-shadow: 0 0 26px rgba(196, 120, 255, 0.34);
+      }
+    }
+    
     .secondary-btn {
       color: white;
       background: rgba(255,255,255,0.08);
@@ -382,6 +430,51 @@
       padding: 8px 14px;
     }
 
+    .options-wrapper {
+      position: relative;
+    }
+
+    .options-btn {
+      background: transparent;
+      border: none;
+      color: #cfaeff;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 10px;
+    }
+
+    .options-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .options-menu {
+      position: absolute;
+      top: 35px;
+      right: 0;
+      background: rgba(20, 10, 40, 0.95);
+      border: 1px solid; rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+      display: none;
+      min-width: 120px;
+    }
+
+    .options-menu button {
+      width: 100%;
+      background: none;
+      border: none;
+      color: white;
+      padding: 10px;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .options-menu button:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+    
     .status {
       min-height: 22px;
       color: var(--text-dim);
@@ -418,6 +511,10 @@
     <section class="panel">
       <div class="written-poems-top">
         <h2>Our Written Poems</h2>
+
+        <p class="written-poems-subtitle">
+          Every poem, and every thought of you was all over the place, now they keep glowing in one place.
+        </p>
 
         <div class="top-actions">
           <button type="button" class="secondary-btn" id="backToGardenBtn">Back to Garden</button>
@@ -506,14 +603,15 @@
             </div>
 
             <div class="poem-actions">
-              <button type="button" class="options-btn">...</button>
+              <div class="options-wrapper">
 
-              <div class="options-menu hidden">
-              <button type="button" class="dit-btn" data-id="${poem.id}">Edit
-              </button>
-              <button type="button" class="delete-btn" onclick="deletePoem('${poem.id}')">Delete
-              </button>
+              <button class="options-btn" onclick="toggleMenu(this)">...</button>
+
+              <div class="options-menu">
+              <button onclick="editPoems('${poem.id}')">Edit</button>
+              <button onclick="deletePoems('${poem.id}')">Delete</button>
             </div>
+            
           </div>
         </div>
         
@@ -523,27 +621,24 @@
     `).join("");
     }
 
-    document.querySelectorAll(".options-btn").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        e.stopPropagation();
-
-        const menu = btn.nextElementSibling;
+    function toggleMenu(btn) {
+      const menu = btn.nextElementSibling;
 
     document.querySelectorAll(".options-menu").forEach((m) => {
-      if (m !== menu)
-        m.classList.add("hidden");
+        if (m !== menu) m.style.display = "none";
+      });
+
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
+
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(.options-wrapper"))}
+
+    document.querySelectorAll(".options-menu").forEach((menu) => {
+          m.style.display = "none";
+        });
+      }
     });
-
-    menu.classList.toggle("hidden");
-  });
-});
-
-document.addEventListener("click", () => {
-
-document.querySelectorAll(".options-menu").forEach((menu) => {
-    menu.classList.add("hidden");
-  });
-});
 
     async function loadPoems() {
       try {
