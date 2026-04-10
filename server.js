@@ -197,6 +197,10 @@ app.get("/poems", (req, res) => {
   res.sendFile(path.join(__dirname, "poems.html"));
 });
 
+app.get("/written-poems", (req, res) => {
+  res.sendFile(path.join(__dirname, "written-poems.html"));
+});
+
 app.get("/api/state", async (req, res) => {
   try {
      ensureCsrfToken(req);
