@@ -571,6 +571,8 @@
     const pageStatus = document.getElementById("pageStatus");
     const backToGardenBtn = document.getElementById("backToGardenBtn");
 
+    let csrfToken = "";
+
     function setStatus(element, message = "", type = "") {
       if (!element) return;
       element.textContent = message;
@@ -685,6 +687,7 @@
         
         try {
           const data = await api("/api/state");
+          csrfToken = data.csrfToken || "";
           poems = Array.isArray(data.poems) ? data.poems : [];
         } catch {
           const data = await api("/api/poems");
