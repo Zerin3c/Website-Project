@@ -1104,7 +1104,9 @@
           method: "POST",
           body: JSON.stringify({
             title: poemTitle.value.trim(),
-            content: poemContent.value.trim()
+            author: userBadge.textContent,
+            content: poemContent.value.trim(),
+            createdAt: new Date()
           })
         });
 
