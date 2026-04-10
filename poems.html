@@ -229,36 +229,37 @@
     }
 
     .hero {
-      margin-top: 16px;
-      padding: 48px 28px 38px;
-      border-radius: 30px;
+      border-radius: 26px;
       border: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(41, 17, 68, 0.82), rgba(15, 7, 25, 0.94));
+      background: linear-gradient(180deg, rgba(16, 8, 28, 0.92), rgba(12, 6, 22, 0.96));
       box-shadow: var(--shadow), var(--glow);
+      padding: 20px 24px 16px;
       position: relative;
       overflow: hidden;
       backdrop-filter: blur(12px);
       text-align: center;
+      margin-bottom: 18px;
     }
 
     .hero h1 {
-      font-size: clamp(2.2rem, 5vw, 4.4rem);
-      line-height: 1.05;
-      margin-bottom: 12px;
+      margin: 0 0 10px;
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      line-height: 1;
+      margin-bottom: 10px;
       color: var(--text);
-      text-shadow: 0 0 10px rgba(230, 210, 255, 0.35), 0 0 28px rgba(156, 89, 255, 0.18);
+      text-shadow: 0 0 10px rgba(230, 216, 255, 0.55), 0 0 28px rgba(156, 89, 255, 0.18);
     }
 
     .subtitle {
       max-width: 760px;
-      margin: 0 auto;
+      margin: 0 auto 10px;
       color: var(--text-soft);
-      line-height: 1.75;
-      font-size: 1.06rem;
+      line-height: 1.45;
+      font-size: 0.96rem;
     }
 
     .heart-line {
-      margin: 18px auto 0;
+      margin: 12px auto 0;
       width: 180px;
       height: 2px;
       background: linear-gradient(90deg, transparent, #ead7ff, transparent);
@@ -277,19 +278,13 @@
       font-size: 0.95rem;
     }
 
-    .layout {
-      display: block;
-      margin-top: 22px;
-    }
-
     .panel {
       border-radius: 26px;
       border: 1px solid var(--border);
       background: linear-gradient(180deg, var(--panel), var(--panel-2));
       box-shadow: var(--shadow);
-      padding: 22px;
+      padding: 18px 18px 56px;
       backdrop-filter: blur(12px);
-
       width: 100%;
       max-width: 1100px;
       margin: 0 auto;
@@ -399,16 +394,17 @@
 
     .top-row {
       display: grid;
-      grid-template-columns: 1fr auto;
+      grid-template-columns: 1fr 220px;
       gap: 24px;
       align-items: start;
+      margin-bottom: 8px;
     }
 
     .top-side {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 10px;
+      gap: 12px;
     }
 
     .badge {
@@ -502,18 +498,30 @@
 
     .poems-layout {
       display: grid;
-      grid-template-columns: 0.9fr 1.1fr;
-      gap: 28px;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 34px;
       margin-top: 28px;
       align-items: start;
     }
 
     .poem-feed,
     .poem-compose {
+      min-height: 440px;
       margin-bottom: 14px;
       color: #f9f0ff;
     }
 
+    .poem-feed {
+      width: 100%;
+      max-width: 340p;
+    }
+
+    .poem-compose {
+      width: 520px;
+      max-width: 100%;
+      justify-self: end;
+    }
+      
     .top-side {
       display: flex;
       flex-direction: column;
@@ -667,35 +675,42 @@
     }
     
     @media (max-width: 960px) {
-    .layout {
-      grid-template-columns: 1fr;
-    }
+      .top-row {
+        grid-template-columns: 1fr;
+      }
 
-    .poems-layout {
-      display: grid;
-      grid-template-columns: 0.9fr 1.1fr;
-      gap: 28px;
-      margin-top: 28px;
-      align-items: start;
-    }
+      .top-side {
+        align-items: flex-start;
+      }
 
-    .poem-feed {
-      width: 100%;
-    }
+      #authButtons {
+        justify-content: flex-start;
+      }
 
-    .poem-compose {
-      width: 100%;
-    }
+      .poems-layout {
+        grid-template-columns: 1fr;
+        gap: 22px;
+      }
 
-    .poem-feed,
-    .poem-compose {
-      min-height: 440px;
+      .poem-feed,
+      .poem-compose {
+        width: 100%;
+        max-width: none;
+        min-height: 440px;
+        justify-self: stretch;
+      }
+
+      .poem-list {
+        max-height: none;
+      }
+
+      .footer-note {
+        position: static;
+        transform: none;
+        margin: 28px auto 0;
+        text-align: center;
+      }
     }
-      
-    .poem-list {
-      max-height: none;
-    }
-  }
   </style>
 </head>
 <body>
