@@ -224,14 +224,15 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      align-items: center;
       position: relative;
       padding-bottom: 70px;
     }
 
     .hero {
-      width: 100%
-      max-width: 999px;
-      margin: 0 auto 18px;
+      width: min(900px, calc(100% - 40px));
+      align-self: center;
+      margin: 0 auto 18px auto;
       border-radius: 26px;
       border: 1px solid var(--border);
       background: linear-gradient(180deg, rgba(16, 8, 28, 0.92), rgba(12, 6, 22, 0.96));
