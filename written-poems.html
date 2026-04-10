@@ -619,8 +619,8 @@
     }
 
     function renderPoems(poems = []) {
-  if (!poems.length) {
-    poemList.innerHTML = `
+      if (!poems.length) {
+      poemList.innerHTML = `
       <div class="empty-state">
         No poems yet. Go back to the garden and write the first one.
       </div>
@@ -633,8 +633,10 @@
       <div class="poem-header">
         <div>
           <div class="poem-title">${escapeHtml(poem.title || "Untitled")}</div>
-          <div class="poem-meta">${new Date(poem.createdAt).toLocaleString()}</div>
-        </div>
+          <div class="poem-meta">
+            ${poem.author ? "by " + poem.author + " • " : ""}
+            ${poem.createdAt).toLocaleString() : ""}
+          </div>
 
         <div class="poem-actions">
           <div class="options-wrapper">
@@ -685,19 +687,6 @@
           const data = await api("/api/poems");
           poems = Array.isArray(data) ? data : (Array.isArray(data.poems) ? data.poems : []);
         }
-
-        poems.unshift({
-          id: "first-poem",
-          title: "I'm sorry",
-          content: `I'm sorry for all the times that hurt you. 
-          If your mind is tired, let mine be your rest. 
-          If your heart is heavy, let my love lay awake beside you. 
-          Every word I wish I could take back and rewrite, every moment I'd fix if I could tonight.
-
-          You are my peace, my chaos, my home, even when I made you feel alone.
-          If I could turn back time, I'd choose you again, and love you softer, without the pain.`,
-          createdAt: new Date("2026-04.08T23:54:00")
-        });
 
         renderPoems(poems);
         setStatus(pageStatus, "");
