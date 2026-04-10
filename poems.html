@@ -523,8 +523,8 @@
     
     .poem-compose {
       width: 100%;
-      max-width: 640px;
-      min-height: 480px;
+      max-width: 700px;
+      margin: 0 auto;
     }
 
     .top-poems-btn {
@@ -708,7 +708,6 @@
         width: 100%;
         max-width: none;
         min-height: 440px;
-        justify-self: stretch;
       }
 
       .footer-note {
@@ -717,7 +716,16 @@
         margin: 28px auto 0;
         text-align: center;
       }
-    }
+
+      .poem-compose input,
+      .poem-compose textarea {
+        width: 100%;
+      }
+
+      .poem-compose button {
+        display: block;
+        margin: 16px auto 0;
+      }
   </style>
 </head>
 <body>
