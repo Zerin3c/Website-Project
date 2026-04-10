@@ -417,16 +417,6 @@
       font-size: 0.9rem;
     }
 
-    .poem-list {
-      display: grid;
-      gap: 14px;
-      max-height: 650px;
-      overflow: auto;
-      padding-right: 6px;
-      margin-top: 14px;
-      scroll-behavior: smooth;
-    }
-
     .poem-card {
       border-radius: 22px;
       padding: 18px;
@@ -506,7 +496,6 @@
 
     .poem-feed,
     .poem-compose {
-      min-height: 440px;
       margin-bottom: 14px;
       color: #f9f0ff;
     }
@@ -514,14 +503,24 @@
     .poem-feed {
       display: flex;
       flex-direction: column;
-      align-items: felx-start;
-      width: 100%;
-      max-width: 340p;
+      justify-content: center;
+      align-items: flex-start;
     }
 
+    .poem-feed p {
+      color: var(--text-soft);
+      margin-bottom: 14px;
+      line-height: 1.6;
+    }
+
+    .poem-feed button {
+      margin-top: 10px;
+    }
+    
     .poem-compose {
       width: 520px;
       max-width: 100%;
+      min-height: 440px;
       justify-self: end;
     }
       
@@ -703,10 +702,6 @@
         justify-self: stretch;
       }
 
-      .poem-list {
-        max-height: none;
-      }
-
       .footer-note {
         position: static;
         transform: none;
@@ -787,8 +782,9 @@
 
               <div class="poem-feed">
                 <h3>Our Poems</h3>
-                <p class="poem-feed-copy">Read all our saved poems on a seperate page.
-                </p>
+                
+                <p>Read all our saved poems on a seperate page.</p>
+                
                 <button type="button" class="primary-btn" id="viewPoemsBtn">Open Our Poems</button>
               </div>
             
