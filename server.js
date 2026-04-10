@@ -302,7 +302,7 @@ app.post("/api/setup", authLimiter, async (req, res) => {
       "INSERT INTO poems (title, content, author_id) VALUES ($1, $2, $3)",
       [
         "For You",
-        "I'm sorry for the moments that hurt you.\nI love you more deeply than my clumsy words sometimes know how to say.\nIf your heart is tired, let mine be your rest.\nIf your night is heavy, let my love stay awake beside you.",
+        "I'm sorry for the moments that hurt you.\nI love you more deeply than my clumsy words sometimes know how to say.\nIf your heart is tired, let mine be your rest.\nIf your night is heavy, let my love stay awake beside you. Every word I wish I could take back and rewrite, every moment I'd fix if I could tonight. You are my peace, my chaos, my home, even when I made you feel alone. If I could turn back time, I'd choose you again, and love you softer, without the pain.",
         user1.rows[0].id
       ]
     );
