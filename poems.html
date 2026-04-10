@@ -495,7 +495,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: 28px;
+      gap: 22px;
+      width: 100%
     }
 
     .poem-feed,
@@ -525,6 +526,7 @@
       width: 100%;
       max-width: 900px;
       margin: 0 auto;
+      min-height: 440px;
     }
 
     #poemForm {
@@ -544,6 +546,12 @@
       display: flex;
       justify-content: center;
       margin: 20px auto;
+    }
+
+    .poem-compose button {
+      display: block;
+      width: 100%;
+      margin: 16px auto 0;
     }
     
     .top-side {
@@ -741,6 +749,7 @@
 
       .poem-compose button {
         display: block;
+        width: 100%;
         margin: 16px auto 0;
       }
   </style>
@@ -767,7 +776,7 @@
       <section class="panel">
         <div class="top-row">
           <div>
-            <h2>Your Private Poem Garden</h2>
+            <h2>Yesterday. Today. Tomorrow.</h2>
             
             <p style="
               margin-top: 8px;
@@ -787,66 +796,67 @@
               <button type="button" class="secondary-btn" id="logoutBtn">Log Out</button>
             </div>
           </div>
+        </div>
 
-          <div id="lockedView">
-            <p>Log in to read and write poems in your glowing secret garden.</p>
-          </div>
+        <div id="lockedView">
+          <p>Log in to read and write poems in your glowing secret garden.</p>
+        </div>
 
-          <div id="profileSetupBox" class="hidden">
-            <h3>Finish Your Profile</h3>
+        <div id="profileSetupBox" class="hidden">
+          <h3>Finish Your Profile</h3>
 
-            <form id="profileSetupForm">
-              <label>
-                Email
-                <input type="email" id="profileEmail" placeholder="your@email.com" required />
-              </label>
+          <form id="profileSetupForm">
+            <label>
+              Email
+              <input type="email" id="profileEmail" placeholder="your@email.com" required />
+            </label>
 
-              <label>
-                Short profile quote (optional)
-                <input type="text" id="profileQuote" placeholder="Example: always yours under the stars" />
-              </label>
+            <label>
+              Short profile quote (optional)
+              <input type="text" id="profileQuote" placeholder="Example: always yours under the stars" />
+            </label>
 
-              <button type="submit" class="primary-btn">Complete Profile</button>
-              <div class="status" id="profileSetupStatus"></div>
-            </form>
-          </div>
+            <button type="submit" class="primary-btn">Complete Profile</button>
+            <div class="status" id="profileSetupStatus"></div>
+          </form>
+        </div>
 
-          <div id="poemArea" class="hidden">
-            <div class="poems-layout">
+        <div id="poemArea" class="hidden">
+          <div class="poems-layout">
 
-              <div class="top-poems-btn">
-                <button type="button" class="primary-btn" id="viewPoemsBtn">
-                  Our Poems
-                </button>
-              </div>
-            
-              <div class="poem-compose">
-                <h3>Write a poem</h3>
-              
-                <form id="poemForm">
-                  <label>
-                    Poem title
-                    <input type="text" id="poemTitle" placeholder="Example: Midnight Apology" required />
-                  </label>
-
-                  <label>
-                    Your poem
-                    <textarea id="poemContent" placeholder="Write your love poem here..." required></textarea>
-                  </label>
-
-                  <button type="submit" class="primary-btn">Save Poem</button>
-                  <div class="status" id="poemStatus"></div>
-                </form>
-              </div>
-            
+            <div class="top-poems-btn">
+              <button type="button" class="primary-btn" id="viewPoemsBtn">
+                Our Poems
+              </button>
             </div>
+            
+            <div class="poem-compose">
+              <h3>Write a poem</h3>
+              
+               <form id="poemForm">
+                <label>
+                  Poem title
+                  <input type="text" id="poemTitle" placeholder="Example: Midnight Apology" required />
+                </label>
+
+                <label>
+                  Your poem
+                  <textarea id="poemContent" placeholder="Write your love poem here..." required></textarea>
+                </label>
+
+                <button type="submit" class="primary-btn">Save Poem</button>
+                <div class="status" id="poemStatus"></div>
+              </form>
+            </div>
+            
           </div>
+        </div>
 
-        <p class="footer-note">Made with black skies, violet light, glowing butterflies, drifting petals, and love.
-        </p>
-      </div>
+      <p class="footer-note">Made with black skies, violet light, glowing butterflies, drifting petals, and love.
+      </p>
+    </section>
 
-      <script>   
+    <script>   
     const background = document.getElementById("background");
 
     const lockedView = document.getElementById("lockedView");
