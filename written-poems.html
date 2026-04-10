@@ -421,7 +421,6 @@
 
         <div class="top-actions">
           <button type="button" class="secondary-btn" id="backToGardenBtn">Back to Garden</button>
-          <button type="button" class="secondary-btn" id="logoutBtn">Log Out</button>
         </div>
       </div>
 
@@ -439,7 +438,6 @@
     const poemList = document.getElementById("poemList");
     const pageStatus = document.getElementById("pageStatus");
     const backToGardenBtn = document.getElementById("backToGardenBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
 
     function setStatus(element, message = "", type = "") {
       if (!element) return;
@@ -503,16 +501,49 @@
           <div class="poem-header">
             <div>
               <div class="poem-title">${escapeHtml(poem.title || "Untitled")}</div>
-              <div class="poem-meta">
-                By ${escapeHtml(poem.author || "Unknown")} • ${escapeHtml(formatDate(poem.created_at || poem.date))}
+              <div class="poem-meta">${new Date(poem.createdAt).toLocaleString()}
               </div>
             </div>
-            <button type="button" class="danger-btn" onclick="deletePoem('${poem.id}')">Delete</button>
+
+            <div class="poem-actions">
+              <button type="button" class="options-btn">...</button>
+
+              <div class="options-menu hidden">
+              <button type="button" class="dit-btn" data-id="${poem.id}">Edit
+              </button>
+              <button type="button" class="delete-btn" onclick="deletePoem('${poem.id}')">Delete
+              </button>
+            </div>
           </div>
-          <div class="poem-text">${escapeHtml(poem.content || "")}</div>
-        </article>
-      `).join("");
+        </div>
+        
+        <div class="poem-text">${poem.content}</div>
+        
+      </article>
+    `).join("");
     }
+
+    document.querySelectorAll(".options-btn").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+
+        const menu = btn.nextElementSibling;
+
+    document.querySelectorAll(".options-menu").forEach((m) => {
+      if (m !== menu)
+        m.classList.add("hidden");
+    });
+
+    menu.classList.toggle("hidden");
+  });
+});
+
+document.addEventListener("click", () => {
+
+document.querySelectorAll(".options-menu").forEach((menu) => {
+    menu.classList.add("hidden");
+  });
+});
 
     async function loadPoems() {
       try {
