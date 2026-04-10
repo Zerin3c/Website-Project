@@ -896,10 +896,11 @@
     loadPoems();
 
     document.addEventListener("input", (e) => {
-      if(e.target.classList.contains("edit-content-input"))
+      if
+    (e.target.classList.contains("edit-content-input")) {
         e.target.style.height = "auto";
         e.target.style.height = e.target.scrollHeight + "px";
-      });
+      }
     });
   </script>
 </body>
