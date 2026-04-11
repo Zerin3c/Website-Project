@@ -235,7 +235,7 @@ app.get("/api/state", async (req, res) => {
 
       if (meResult.rows.length) {
         const me = meResult.rows[0];
-        needsProfileSetup = !me.email;
+        needsProfileSetup = !me.email || !me.profile_quote;
       }
     }
 
