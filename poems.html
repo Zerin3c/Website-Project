@@ -666,28 +666,30 @@
       position: fixed;
       pointer-events: none;
       z-index: 9999;
-      font-size: 14px;
-
+      font-size: 16px;
       color: #ff66b8;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.8);
 
       text-shadow:
         0 0 6px rgba(255, 77, 166, 0.9),
-        0 0 12px rgba(255, 77, 166, 0.7),
+        0 0 12px rgba(255, 77, 166, 0.8),
         0 0 20px rgba(255, 0, 130, 0.5);
 
-      animation: floatHeart 1.8s ease-in-out forwards;
+      animation: floatHeart 2.6s ease-in-out forwards;
     }
 
     @keyframes floatHeart {
       0% {
-        transform: translateY(0) scale(0.8);
-        opacity: 0;
+        transform: translate(-50%, -50%) translateY(0) scale(0.8);
+        opacity: 1;
       }
-      10% {
+
+      15% {
         opacity: 1;
       }
       100% {
-        transform: translateY(-120px) translateX(var(--drift, 0px)) scale(1.25);
+        transform: translate(-50%, -50%) translateY(-140px) translateX(var(--drift, 0px)) scale(1.35);
         opacity: 0;
       }
     }
@@ -1074,20 +1076,18 @@
       }
     });
 
-    function burstHeartsFromElement(element, count = 10) {
-      if (!element) return;
+    function burstHeartsFromElement(el) {
+      const rect = el.getBoundingClientRect();
 
-      const rect = element.getBoundingClientRect();
-
-      for (let i = 0; i < count; i++) {
+      for (let i = 0; i < 8; i++) {
         const heart = document.createElement("div");
-        heart.className = "floating-heart";
+        heart.className = "floatin-heart";
         heart.textContent = "♡";
 
-        const startX = rect.left + rect.width / 2 + (Math.random() * 80 - 40);
-        const startY = rect.top + rect.height / 2 + (Math.random() * 20 - 10);
-        const drift = Math.random() * 80 - 40;
-        const size = 8 + Math.random() * 6;
+        const startX = rect.left + rect.width / 2 + (Math.random() * 120 - 60);
+        const startY = rect.top + rect.height / 2 + (Math.random() * 24 - 12);
+        const drift = Math.random() * 120 - 60;
+        const size = 8 + Math.random() * 10;
 
         heart.style.left = startX + "px";
         heart.style.top = startY + "px";
@@ -1095,7 +1095,7 @@
 
         document.body.appendChild(heart);
 
-        setTimeout(() => heart.remove(), 1800);
+        setTimeout(() => heart.remove(), 2600);
       }
     }
 
