@@ -901,6 +901,8 @@
 
     let csrfToken = "";
 
+    let csrfToken = null;
+
     function setStatus(element, message, type = "") {
       element.textContent = message;
       element.className = "status" + (type ? " " + type : "");
@@ -970,6 +972,8 @@
     }
 
     function renderState(data) {
+      currentUser = data.currentUser;
+      
       if (data.csrfToken) {
         csrfToken = data.csrfToken;
       }
@@ -1110,7 +1114,7 @@
           method: "POST",
           body: JSON.stringify({
             title: poemTitle.value.trim(),
-            author: userBadge.textContent,
+            author: currentUser.name,
             content: poemContent.value.trim(),
             createdAt: new Date()
           })
