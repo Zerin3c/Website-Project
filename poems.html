@@ -1018,13 +1018,19 @@
       }
 
     function renderPoems(poems, currentUser) {
+      if (!poemList) return;
+      
       if (!poems.length) {
-        poemList.innerHTML = '<div class="empty-state">No poems yet.<br />Write the first one and make this little world bloom.</div>';
+        poemList.innerHTML = `
+          <div class="empty-state">
+            No poems yet. Write the first one and make this little world bloom.
+          </div>
+        ';
         return;
       }
 
       poemList.innerHTML = poems.map(poem => {
-        const deleteButton = poem.author === currentUser.name
+        const deleteButton = currentUser && poem.author === currentUser.name
           ? '<button class="secondary-btn" onclick="deletePoem(' + poem.id + ')">Delete</button>'
           : '';
 
