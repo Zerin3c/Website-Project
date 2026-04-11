@@ -583,10 +583,11 @@
     async function api(url, options = {}) 
     {
       const headers = {
-        "Content-Type": "application/json", ...(options.method || {})
+        "Content-Type": "application/json", 
+        ...(options.headers || {})
       };
 
-      const method = (option.method || "GET").toUpperCase();
+      const method = (options.method || "GET").toUpperCase();
 
       if (csrfToken && ["POST", "PUT", "PATCH", "DELETE"].includes(method)) {
         headers["x-csrf-token"] = csrfToken;
