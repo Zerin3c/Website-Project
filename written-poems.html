@@ -580,25 +580,28 @@
       if (type) element.classList.add(type);
     }
 
-    async function api(url, options = {}) {
+    async function api(url, options = {}) 
+    {
+      const headers = {
+        "Content-Type": "application/json", ...(options.method || {})
+      };
+
+      const method = (option.method || "GET").toUpperCase();
+
+      if (csrfToken && ["POST", "PUT", "PATCH", "DELETE"].includes(method)) {
+        headers["x-csrf-token"] = csrfToken;
+      }
+      
       const response = await fetch(url, {
         credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          ...(options.headers || {})
-        },
-        ...options
+        ...options,
+        headers
       });
 
-      let data = {};
-      try {
-        data = await response.json();
-      } catch {
-        data = {};
-      }
+      const data = await response.json().catch(() => ({}));
 
       if (!response.ok) {
-        throw new Error(data.error || "Something went wrong.");
+        throw new Error(data.error || "Request failed.");
       }
 
       return data;
@@ -692,7 +695,8 @@
           data.poems : [];
         } catch {
           const data = await api("/api/poems");
-          poems = Array.isArray(data) ? data : (Array.isArray(data.poems) ? data.poems : []);
+          poems = Array.isArray(data) ? data : (Array.isArray(data.poems) ? 
+          data.poems : []);
         }
 
         renderPoems(poems);
@@ -712,7 +716,10 @@
       if (!confirmed) return;
 
       try {
-        const data = await api("/api/poems/" + id, { method: "DELETE" });
+        const data = await api("/api/poems/" + id, { 
+          method: "DELETE" 
+        });
+        
         setStatus(pageStatus, data.message || "Poem deleted.", "success");
         await loadPoems();
       } catch (error) {
