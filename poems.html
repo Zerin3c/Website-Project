@@ -1152,37 +1152,92 @@
     function createPetal() {
       const petal = document.createElement("div");
       petal.className = "petal";
-      petal.innerHTML = `
-        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs>
-            <linearGradient id="petalFill" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#fff0f8"/>
-              <stop offset="35%" stop-color="#ffc6e7"/>
-              <stop offset="70%" stop-color="#ff8fd8"/>
-              <stop offset="100%" stop-color="#c86cff"/>
-            </linearGradient>
 
-            <radialGradient id="petalGlow" cx="50%" cy="45%" r="55%">
-              <stop offset="0%" stop-color="#ffd9f0" stop-opacity="0.75"/>
-              <stop offset="100%" stop-color="#ff8fd8" stop-opacity="0"/>
-            </radialGradient>
-          </defs>
+      const svgNS = "http://www.w3.org/2000/svg";
+      const svg = document.createElementNS(svgNS, "svg");
+      svg.setAttribute("viewBox", "0 0 64 64");
+      svg.setAttribute("xmlns", svgNS);
+      svg.setAttribute("aria-hidden", "true");
 
-          <ellipse cx="32" cy="34" rx="18" ry="21" fill="url(#petalGlow)" opacity="0.45"/>
-          <path d="M32 9
-            C42 10, 53 20, 50 34
-            C47 48, 37 56, 32 59
-            C27 56, 17 48, 14 34
-            C11 20, 22 10, 32 9Z"
-            fill="url(#petalFill)"/>
-          <path d="M32 14
-            C37 21, 37 41, 32 54"
-            stroke="rgba(255,255,255,0.45)"
-            stroke-width="1.5"
-            fill="none"
-            stroke-linecap="round"/>
-        </svg>
-      `;
+      const defs = document.createElementNS(svgNS, "defs");
+
+      const linearGradient = document.createElementNS(svgNS, "linearGradient");
+      linearGradient.setAttribute("id", "petalFill");
+      linearGradient.setAttribute("x1", "0");
+      linearGradient.setAttribute("y1", "0");
+      linearGradient.setAttribute("x2", "1");
+      linearGradient.setAttribute("y2", "1");
+
+      const lg1 = document.createElementNS(svgNS, "stop");
+      lg1.setAttribute("offset", "0%");
+      lg1.setAttribute("stop-color", "#fff0f8");
+
+      const lg2 = document.createElementNS(svgNS, "stop");
+      lg2.setAttribute("offset", "35%");
+      lg2.setAttribute("stop-color", "#ffc6e7");
+
+      const lg3 = document.createElementNS(svgNS, "stop");
+      lg3.setAttribute("offset", "70%");
+      lg3.setAttribute("stop-color", "#ff8fd8");
+
+      const lg4 = document.createElementNS(svgNS, "stop");
+      lg4.setAttribute("offset", "100%");
+      lg4.setAttribute("stop-color", "#c86cff");
+
+      linearGradient.append(lg1, lg2, lg3, lg4);
+
+      const radialGradient = document.createElementNS(svgNS, "radialGradient");
+      radialGradient.setAttribute("id", "petalGlow");
+      radialGradient.setAttribute("cx", "50%");
+      radialGradient.setAttribute("cy", "45%");
+      radialGradient.setAttribute("r", "55%");
+
+      const rg1 = document.createElementNS(svgNS, "stop");
+      rg1.setAttribute("offset", "0%");
+      rg1.setAttribute("stop-color", "#ffd9f0");
+      rg1.setAttribute("stop-opacity", "0.75");
+
+      const rg2 = document.createElementNS(svgNS, "stop");
+      rg2.setAttribute("offset", "100%");
+      rg2.setAttribute("stop-color", "#ff8fd8");
+      rg2.setAttribute("stop-opacity", "0");
+
+      radialGradient.append(rg1, rg2);
+      defs.append(linearGradient, radialGradient);
+
+      const ellipse = document.createElementNS(svgNS, "ellipse");
+      ellipse.setAttribute("cx", "32");
+      ellipse.setAttribute("cy", "34");
+      ellipse.setAttribute("rx", "18");
+      ellipse.setAttribute("ry", "21");
+      ellipse.setAttribute("fill", "url(#petalGlow)");
+      ellipse.setAttribute("opacity", "0.45");
+
+      const path1 = document.createElementNS(svgNS, "path");
+      path1.setAttribute(
+        "d",
+        "M32 9 C42 10, 53 20, 50 34 C47 48, 37 56, 32 59 C27 56, 17 48, 14 34 C11 20, 22 10, 32 9Z"
+      );
+      path1.setAttribute("fill", "url(#petalFill)");
+
+      const path2 = document.createElementNS(svgNS, "path");
+      path2.setAttribute("d", "M32 14 C37 21, 37 41, 32 54");
+      path2.setAttribute("stroke", "rgba(255,255,255,0.45)");
+      path2.setAttribute("stroke-width", "1.5");
+      path2.setAttribute("fill", "none");
+      path2.setAttribute("stroke-linecap", "round");
+
+      svg.append(defs, ellipse, path1, path2);
+      petal.appendChild(svg);
+
+      petal.style.left = Math.random() * 100 + "vw";
+      petal.style.top = "-10vh";
+      petal.style.animationDuration = 10 + Math.random() * 8 + "s";
+      petal.style.animationDelay = Math.random() * 8 + "s";
+      petal.style.transform = "scale(" + (0.8 + Math.random() * 0.7) + ")";
+
+      background.appendChild(petal);
+    }
       petal.style.left = Math.random() * 100 + "vw";
       petal.style.top = "-10vh";
       petal.style.animationDuration = 10 + Math.random() * 8 + "s";
