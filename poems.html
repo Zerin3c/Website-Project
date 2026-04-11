@@ -1419,11 +1419,12 @@
       profileSetupForm.reset();
       await refreshState();
     } catch (error) {
-      setStatus(profileSetupStatus, error.message, "error");
+        setStatus(profileSetupStatus, error.message, "error");
+      }
+    });
+
     }
-  });
-    
-     refreshState();
+    refreshState();
   </script>
 </body>
 </html>
