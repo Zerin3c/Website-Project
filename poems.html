@@ -937,7 +937,7 @@
       const response = await fetch(url, {
         ...options,
         headers,
-        credentials: "same-origin"
+        credentials: "include"
       });
 
       const contentType = response.headers.get("content-type") || "";
@@ -1132,7 +1132,7 @@
 
     textarea.addEventListener("input", () => {
       textarea.style.height = "auto";
-      textare.style.height = textarea.scrollHeight + "px";
+      textarea.style.height = textarea.scrollHeight + "px";
     });
 
     function createSparkles() {
@@ -1236,13 +1236,6 @@
       petal.style.animationDelay = Math.random() * 8 + "s";
       petal.style.transform = "scale(" + (0.8 + Math.random() * 0.7) + ")";
 
-      background.appendChild(petal);
-    }
-      petal.style.left = Math.random() * 100 + "vw";
-      petal.style.top = "-10vh";
-      petal.style.animationDuration = 10 + Math.random() * 8 + "s";
-      petal.style.animationDelay = Math.random() * 8 + "s";
-      petal.style.transform = "scale(" + (0.8 + Math.random() * 0.7) + ") rotate(" + (Math.random() * 360) + "deg)";
       background.appendChild(petal);
     }
 
@@ -1423,7 +1416,6 @@
       }
     });
 
-    }
     refreshState();
   </script>
 </body>
