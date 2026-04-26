@@ -187,7 +187,12 @@
       width: 84px;
       height: 60px;
       animation: butterflyDrift linear infinite;
-      filter: drop-shadow(0 0 10px rgba(220, 170, 255, 0.22)) drop-shadow(0 0 24px rgba(123, 44, 255, 0.18)) drop-shadow(0 0 42px rgba(85, 25, 170, 0.12));
+      filter:
+        drop-shadow(0 0 10px rgba(220, 170, 255, 0.22))
+        drop-shadow(0 0 24px rgba(123, 44, 255, 0.18))
+        drop-shadow(0 0 42px rgba(85, 25, 170, 0.12));
+      z-index: 4;
+      pointer-events: none;
     }
 
     .butterfly .wing-left,
@@ -215,14 +220,12 @@
       70% {
         transform: translate(64vw, 4vh) scale(0.96) rotate(-2deg);
         opacity: 0.92;
-      }      
+      }
       100% {
         transform: translate(110vw, -2vh) scale(0.84) rotate(3deg);
         opacity: 0;
       }
-    }
-
-    .app {
+    }    .app {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
