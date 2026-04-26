@@ -1145,15 +1145,13 @@
         const sparkle = document.createElement("div");
         sparkle.className = "sparkle";
         sparkle.style.left = Math.random() * 100 + "vw";
-        sparkle.style.top = 45 + Math.random() * 55 + "vh";
-        sparkle.style.animationDuration = 4 + Math.random() * 5 + "s";
-        sparkle.style.animationDelay = Math.random() * 6 + "s";
-        sparkle.style.opacity = 0.3 + Math.random() * 0.7;
-        sparkle.style.transform = "scale(" + (0.5 + Math.random() * 1.4) + ")";
+        sparkle.style.top = 20 + Math.random() * 80 + "vh";
+        sparkle.style.animationDuration = 4 + Math.random() * 6 + "s";
+        sparkle.style.animationDelay = Math.random() * 8 + "s";
         background.appendChild(sparkle);
       }
     }
-
+      
     function createPetal() {
       const petal = document.createElement("div");
       petal.className = "petal";
