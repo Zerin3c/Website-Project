@@ -1157,237 +1157,56 @@
     function createPetal() {
       const petal = document.createElement("div");
       petal.className = "petal";
-
-      const svgNS = "http://www.w3.org/2000/svg";
-      const svg = document.createElementNS(svgNS, "svg");
-      svg.setAttribute("viewBox", "0 0 64 64");
-      svg.setAttribute("xmlns", svgNS);
-      svg.setAttribute("aria-hidden", "true");
-
-      const defs = document.createElementNS(svgNS, "defs");
-
-      const linearGradient = document.createElementNS(svgNS, "linearGradient");
-      linearGradient.setAttribute("id", "petalFill");
-      linearGradient.setAttribute("x1", "0");
-      linearGradient.setAttribute("y1", "0");
-      linearGradient.setAttribute("x2", "1");
-      linearGradient.setAttribute("y2", "1");
-
-      const lg1 = document.createElementNS(svgNS, "stop");
-      lg1.setAttribute("offset", "0%");
-      lg1.setAttribute("stop-color", "#fff0f8");
-
-      const lg2 = document.createElementNS(svgNS, "stop");
-      lg2.setAttribute("offset", "35%");
-      lg2.setAttribute("stop-color", "#ffc6e7");
-
-      const lg3 = document.createElementNS(svgNS, "stop");
-      lg3.setAttribute("offset", "70%");
-      lg3.setAttribute("stop-color", "#ff8fd8");
-
-      const lg4 = document.createElementNS(svgNS, "stop");
-      lg4.setAttribute("offset", "100%");
-      lg4.setAttribute("stop-color", "#c86cff");
-
-      linearGradient.append(lg1, lg2, lg3, lg4);
-
-      const radialGradient = document.createElementNS(svgNS, "radialGradient");
-      radialGradient.setAttribute("id", "petalGlow");
-      radialGradient.setAttribute("cx", "50%");
-      radialGradient.setAttribute("cy", "45%");
-      radialGradient.setAttribute("r", "55%");
-
-      const rg1 = document.createElementNS(svgNS, "stop");
-      rg1.setAttribute("offset", "0%");
-      rg1.setAttribute("stop-color", "#ffd9f0");
-      rg1.setAttribute("stop-opacity", "0.75");
-
-      const rg2 = document.createElementNS(svgNS, "stop");
-      rg2.setAttribute("offset", "100%");
-      rg2.setAttribute("stop-color", "#ff8fd8");
-      rg2.setAttribute("stop-opacity", "0");
-
-      radialGradient.append(rg1, rg2);
-      defs.append(linearGradient, radialGradient);
-
-      const ellipse = document.createElementNS(svgNS, "ellipse");
-      ellipse.setAttribute("cx", "32");
-      ellipse.setAttribute("cy", "34");
-      ellipse.setAttribute("rx", "18");
-      ellipse.setAttribute("ry", "21");
-      ellipse.setAttribute("fill", "url(#petalGlow)");
-      ellipse.setAttribute("opacity", "0.45");
-
-      const path1 = document.createElementNS(svgNS, "path");
-      path1.setAttribute(
-        "d",
-        "M32 9 C42 10, 53 20, 50 34 C47 48, 37 56, 32 59 C27 56, 17 48, 14 34 C11 20, 22 10, 32 9Z"
-      );
-      path1.setAttribute("fill", "url(#petalFill)");
-
-      const path2 = document.createElementNS(svgNS, "path");
-      path2.setAttribute("d", "M32 14 C37 21, 37 41, 32 54");
-      path2.setAttribute("stroke", "rgba(255,255,255,0.45)");
-      path2.setAttribute("stroke-width", "1.5");
-      path2.setAttribute("fill", "none");
-      path2.setAttribute("stroke-linecap", "round");
-
-      svg.append(defs, ellipse, path1, path2);
-      petal.appendChild(svg);
-
       petal.style.left = Math.random() * 100 + "vw";
-      petal.style.top = "-10vh";
-      petal.style.animationDuration = 10 + Math.random() * 8 + "s";
+      petal.style.animationDuration = 10 + Math.random() * 10 + "s";
       petal.style.animationDelay = Math.random() * 8 + "s";
-      petal.style.transform = "scale(" + (0.8 + Math.random() * 0.7) + ")";
-
+      petal.innerHTML = `
+        <svg viewBox="0 0 64 64" fill="none">
+          <path d="M31.5 8C42 14 49 23 49 34C49 45 41 54 31.5 58C22 54 14 45 14 34C14 23 21 14 31.5 8Z"
+            fill="url(#petalGradient)"/>
+          <defs>
+            <linearGradient id="petalGradient" x1="14" y1="10" x2="52" y2="58" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#ffd0ea"/>
+              <stop offset="0.48" stop-color="#ff9ed2"/>
+              <stop offset="1" stop-color="#c567ff"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      `;
       background.appendChild(petal);
     }
 
     function createButterfly() {
       const butterfly = document.createElement("div");
       butterfly.className = "butterfly";
-
-      const svgNS = "http://www.w3.org/2000/svg";
-      const svg = document.createElementNS(svgNS, "svg");
-      svg.setAttribute("viewBox", "0 0 140 100");
-      svg.setAttribute("xmlns", svgNS);
-      svg.setAttribute("aria-hidden", "true");
-
-      const defs = document.createElementNS(svgNS, "defs");
-
-      const leftWingOuter = document.createElementNS(svgNS, "linearGradient");
-      leftWingOuter.setAttribute("id", "leftWingOuter");
-      leftWingOuter.setAttribute("x1", "0");
-      leftWingOuter.setAttribute("y1", "0");
-      leftWingOuter.setAttribute("x2", "1");
-      leftWingOuter.setAttribute("y2", "1");
-
-      [
-        ["0%", "#fff6ff"],
-        ["35%", "#ddb6ff"],
-        ["70%", "#9c59ff"],
-        ["100%", "#2b0833"]
-      ].forEach(([offset, color]) => {
-        const stop = document.createElementNS(svgNS, "stop");
-        stop.setAttribute("offset", offset);
-        stop.setAttribute("stop-color", color);
-        leftWingOuter.appendChild(stop);
-      });
-
-      const rightWingOuter = document.createElementNS(svgNS, "linearGradient");
-      rightWingOuter.setAttribute("id", "rightWingOuter");
-      rightWingOuter.setAttribute("x1", "1");
-      rightWingOuter.setAttribute("y1", "0");
-      rightWingOuter.setAttribute("x2", "0");
-      rightWingOuter.setAttribute("y2", "1");
-
-      [
-        ["0%", "#fff6ff"],
-        ["35%", "#d39fff"],
-        ["70%", "#7b2cff"],
-        ["100%", "#220533"]
-      ].forEach(([offset, color]) => {
-        const stop = document.createElementNS(svgNS, "stop");
-        stop.setAttribute("offset", offset);
-        stop.setAttribute("stop-color", color);
-        rightWingOuter.appendChild(stop);
-      });
-
-      const innerGlow = document.createElementNS(svgNS, "linearGradient");
-      innerGlow.setAttribute("id", "innerGlow");
-      innerGlow.setAttribute("x1", "0");
-      innerGlow.setAttribute("y1", "0");
-      innerGlow.setAttribute("x2", "1");
-      innerGlow.setAttribute("y2", "1");
-
-      [
-        ["0%", "#ffffff"],
-        ["100%", "#e7c8ff"]
-      ].forEach(([offset, color]) => {
-        const stop = document.createElementNS(svgNS, "stop");
-        stop.setAttribute("offset", offset);
-        stop.setAttribute("stop-color", color);
-        innerGlow.appendChild(stop);
-      });
-
-      const neonGlow = document.createElementNS(svgNS, "radialGradient");
-      neonGlow.setAttribute("id", "neonGlow");
-      neonGlow.setAttribute("cx", "50%");
-      neonGlow.setAttribute("cy", "50%");
-      neonGlow.setAttribute("r", "50%");
-
-      [
-        ["0%", "#d39fff", "0.7"],
-        ["100%", "#7b2cff", "0"]
-     ].forEach(([offset, color, opacity]) => {
-        const stop = document.createElementNS(svgNS, "stop");
-        stop.setAttribute("offset", offset);
-        stop.setAttribute("stop-color", color);
-        stop.setAttribute("stop-opacity", opacity);
-        neonGlow.appendChild(stop);
-      });
-
-      defs.appendChild(leftWingOuter);
-      defs.appendChild(rightWingOuter);
-      defs.appendChild(innerGlow);
-      defs.appendChild(neonGlow);
-      svg.appendChild(defs);
-
-      const glow = document.createElementNS(svgNS, "ellipse");
-      glow.setAttribute("cx", "70");
-      glow.setAttribute("cy", "50");
-      glow.setAttribute("rx", "46");
-      glow.setAttribute("ry", "28");
-      glow.setAttribute("fill", "url(#neonGlow)");
-      glow.setAttribute("opacity", "0.55");
-      svg.appendChild(glow);
-
-      const leftOuter = document.createElementNS(svgNS, "path");
-      leftOuter.setAttribute("d", "M68 48 C52 22, 18 18, 10 44 C8 58, 18 78, 42 72 C56 68, 64 58, 68 48 Z");
-      leftOuter.setAttribute("fill", "url(#leftWingOuter)");
-      svg.appendChild(leftOuter);
-
-      const rightOuter = document.createElementNS(svgNS, "path");
-      rightOuter.setAttribute("d", "M72 48 C88 22, 122 18, 130 44 C132 58, 122 78, 98 72 C84 68, 76 58, 72 48 Z");
-      rightOuter.setAttribute("fill", "url(#rightWingOuter)");
-      svg.appendChild(rightOuter);
-
-      const leftInner = document.createElementNS(svgNS, "path");
-      leftInner.setAttribute("d", "M66 50 C54 42, 38 44, 32 58 C36 70, 50 72, 60 64 C64 60, 66 54, 66 50 Z");
-      leftInner.setAttribute("fill", "url(#innerGlow)");
-      leftInner.setAttribute("opacity", "0.9");
-      svg.appendChild(leftInner);
-
-      const rightInner = document.createElementNS(svgNS, "path");
-      rightInner.setAttribute("d", "M74 50 C86 42, 102 44, 108 58 C104 70, 90 72, 80 64 C76 60, 74 54, 74 50 Z");
-      rightInner.setAttribute("fill", "url(#innerGlow)");
-      rightInner.setAttribute("opacity", "0.9");
-      svg.appendChild(rightInner);
-
-      const body = document.createElementNS(svgNS, "ellipse");
-      body.setAttribute("cx", "70");
-      body.setAttribute("cy", "52");
-      body.setAttribute("rx", "5");
-      body.setAttribute("ry", "18");
-      body.setAttribute("fill", "#2a1238");
-      svg.appendChild(body);
-
-      const head = document.createElementNS(svgNS, "circle");
-      head.setAttribute("cx", "70");
-      head.setAttribute("cy", "31");
-      head.setAttribute("r", "4");
-      head.setAttribute("fill", "#2a1238");
-      svg.appendChild(head);
-
-      butterfly.appendChild(svg);
-
-      butterfly.style.left = Math.random() * 100 + "vw";
-      butterfly.style.top = 20 + Math.random() * 60 + "vh";
-      butterfly.style.animationDuration = 4 + Math.random() * 6 + "s";
-      butterfly.style.animationDelay = Math.random() * 8 + "s";
-
-      background.appendChild(butterfly);
+      butterfly.style.left = "-10vw";
+      butterfly.style.top = 10 + Math.random() * 60 + "vh";
+      butterfly.style.animationDuration = 18 + Math.random() * 12 + "s";
+      butterfly.style.animationDelay = Math.random() * 10 + "s";
+      butterfly.innerHTML = `
+        <svg viewBox="0 0 120 80" fill="none">
+          <path class="wing-left" d="M58 40C44 12 13 8 8 28C4 44 20 56 39 57C25 63 21 74 32 77C45 80 55 69 60 46"
+            fill="url(#wingLeft)"/>
+          <path class="wing-right" d="M62 40C76 12 107 8 112 28C116 44 100 56 81 57C95 63 99 74 88 77C75 80 65 69 60 46"
+            fill="url(#wingRight)"/>
+          <path d="M60 18C56 26 56 36 60 46C64 36 64 26 60 18Z" fill="#f7dcff"/>
+          <path d="M60 46C57 52 56 59 60 66C64 59 63 52 60 46Z" fill="#f1c8ff"/>
+          <path d="M56 16C51 8 46 6 42 6" stroke="#f2d5ff" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M64 16C69 8 74 6 78 6" stroke="#f2d5ff" stroke-width="2.5" stroke-linecap="round"/>
+          <defs>
+            <linearGradient id="wingLeft" x1="8" y1="15" x2="60" y2="68" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#f7d4ff"/>
+              <stop offset="0.55" stop-color="#cf8bff"/>
+              <stop offset="1" stop-color="#7b2cff"/>
+            </linearGradient>
+            <linearGradient id="wingRight" x1="112" y1="15" x2="60" y2="68" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#ffe2f3"/>
+              <stop offset="0.55" stop-color="#d39cff"/>
+              <stop offset="1" stop-color="#7b2cff"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      `;
     }
 
     createSparkles();
